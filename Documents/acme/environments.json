@@ -1,0 +1,41 @@
+{
+  "environments":
+  [
+    {
+      "name":          "Development",
+      "shortname":     "dev",
+      "storage_sku":   "Standard_LRS",
+      "regions": 
+      [
+        {
+          "prefix":    "wus",
+          "location":  "West US"
+        }
+      ]
+    },
+    {
+      "name":         "Test",
+      "shortname":    "tst",
+      "storage_sku":  "Standard_GRS",
+      "regions": 
+      [
+        {
+          "prefix":    "wus",
+          "location":  "West US"
+        }
+      ]
+    },
+    {
+      "name":         "Production",
+      "shortname":    "prd",
+      "storage_sku":  "Premium_ZRS",
+      "regions": 
+      [
+        {
+          "prefix":    "wus",
+          "location":  "West US"
+        }
+      ]
+    }
+  ]
+}

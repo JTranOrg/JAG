@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JAG.UnitTests", "JAG.UnitTests\JAG.UnitTests.csproj", "{6B9B0C5D-D2F9-41EE-B933-B7C669A7A1EE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{AD8CAD06-EBC4-4E5F-A58B-E747D9629547}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{BD0B61C2-1D1D-45C4-A0BA-134779EE4569}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Keyvault", "Keyvault", "{220A3444-7E44-4692-A89B-2EC50EA2CA5C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{03DC4889-7C4F-4BAE-90F2-51600843482B}"
+	ProjectSection(SolutionItems) = preProject
+		Templates\Resources\Storage\storage.jtran = Templates\Resources\Storage\storage.jtran
+		Templates\Resources\Storage\storage_raw.json = Templates\Resources\Storage\storage_raw.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{94988910-E191-45C3-9844-A156DCF63C31}"
+	ProjectSection(SolutionItems) = preProject
+		blanksource.json = blanksource.json
+		rota-inventory.yaml = rota-inventory.yaml
+		Tests\storage.jtran = Tests\storage.jtran
+	EndProjectSection
+	ProjectSection(FolderGlobals) = preProject
+		C_5_4Development_4Projects_4JTranOrg_4JAG_4Tests_4storage_1jtran__JsonSchema = 
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Yaml", "Yaml", "{2EECEDF5-43EB-4CE6-8323-D071F4F5F71D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Output", "Output", "{EA03E792-1C18-4C1C-9C39-7E9AEE5A9EC8}"
+	ProjectSection(SolutionItems) = preProject
+		blank.json = blank.json
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6B9B0C5D-D2F9-41EE-B933-B7C669A7A1EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B9B0C5D-D2F9-41EE-B933-B7C669A7A1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B9B0C5D-D2F9-41EE-B933-B7C669A7A1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B9B0C5D-D2F9-41EE-B933-B7C669A7A1EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BD0B61C2-1D1D-45C4-A0BA-134779EE4569} = {AD8CAD06-EBC4-4E5F-A58B-E747D9629547}
+		{220A3444-7E44-4692-A89B-2EC50EA2CA5C} = {BD0B61C2-1D1D-45C4-A0BA-134779EE4569}
+		{03DC4889-7C4F-4BAE-90F2-51600843482B} = {BD0B61C2-1D1D-45C4-A0BA-134779EE4569}
+		{2EECEDF5-43EB-4CE6-8323-D071F4F5F71D} = {AD8CAD06-EBC4-4E5F-A58B-E747D9629547}
+		{EA03E792-1C18-4C1C-9C39-7E9AEE5A9EC8} = {94988910-E191-45C3-9844-A156DCF63C31}
+	EndGlobalSection
+EndGlobal

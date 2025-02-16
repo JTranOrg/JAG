@@ -1,0 +1,21 @@
+{
+  "#include":  "storage.jtran",
+
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+
+  "#variable(StorageAccountName)":  "#('st-rota-inventory-' + $environment)",
+
+  "#array(resources)": 
+  {
+    "#storageaccount()":
+    {
+      "Name":           "#($StorageAccountName)",
+      "Location":       "westus2"
+    },
+    "#blobservices()":
+    {
+      "StorageName":    "#($StorageAccountName)"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+name: Rota Inventory Infrastructure
+
+trigger: none
+pr: none
+
+pool:
+   name: Default
+
+jobs:
+ - job: create_arm-dev
+   steps:
+     - task: JTranTransform@1.0.2
+       displayName: 'Create ARM Template'
+       inputs:
+         InputSourcePath:            $(Build.SourcesDirectory)/Tests/blanksource.json
+         TransformPath:              $(Build.SourcesDirectory)/Tests/storage.jtran
+         OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.json
+         MultipleOutput:             false
+         TransformParameters:        '-environment dev'
+
+     - task: AzureResourceManagerTemplateDeployment@3
+       displayName: Deploy ARM Template'
+       inputs:
+         deploymentScope:                   'Resource Group'
+         azureResourceManagerConnection:    JTranOrg
+         subscriptionId:                    367aecbd-8fb0-4d19-9ede-100949e08abc
+         action:                            'Create Or Update Resource Group'
+         resourceGroupName:                 rg-rota-inventory-dev
+         templateLocation:                  'Linked artifact'
+         csmFileLink:                       $(Build.ArtifactStagingDirectory)/rota-inventory.json
+         deploymentMode:                    Incremental

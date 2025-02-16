@@ -1,0 +1,27 @@
+{
+   "ResourceGroups": 
+   [
+     {
+        "name":  "dev-sample-wus-rsg",
+        "StorageAccounts":
+        [
+          {
+            "name": "func"
+           },
+          {
+            "name": "content"
+          },
+          {
+            "name": "doc"
+		]  
+     }
+  ]
+}
+ku":  "bobsyouruncle"
+          }
+		]  
+     }
+  ]
+}
+]
+}
