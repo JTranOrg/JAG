@@ -22,7 +22,7 @@ jobs:
        displayName: Deploy ARM Template'
        inputs:
          deploymentScope:                   'Resource Group'
-         azureResourceManagerConnection:    JTranOrg
+         azureResourceManagerConnection:    JTranOrg_AzureRM
          subscriptionId:                    367aecbd-8fb0-4d19-9ede-100949e08abc
          action:                            'Create Or Update Resource Group'
          resourceGroupName:                 rg-rota-inventory-dev
