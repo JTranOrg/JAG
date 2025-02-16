@@ -7,7 +7,7 @@ pool:
    name: Default
 
 jobs:
- - job: create_arm-dev
+ - job: create_arm_dev
    steps:
      - task: JTranTransform@1.0.2
        displayName: 'Create ARM Template'

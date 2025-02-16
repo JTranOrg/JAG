@@ -19,8 +19,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Storage", "Storage", "{03DC
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{94988910-E191-45C3-9844-A156DCF63C31}"
 	ProjectSection(SolutionItems) = preProject
+		Tests\blank.json = Tests\blank.json
 		blanksource.json = blanksource.json
-		rota-inventory.yaml = rota-inventory.yaml
+		Tests\rota-inventory.yaml = Tests\rota-inventory.yaml
 		Tests\storage.jtran = Tests\storage.jtran
 	EndProjectSection
 	ProjectSection(FolderGlobals) = preProject
@@ -30,9 +31,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Yaml", "Yaml", "{2EECEDF5-43EB-4CE6-8323-D071F4F5F71D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Output", "Output", "{EA03E792-1C18-4C1C-9C39-7E9AEE5A9EC8}"
-	ProjectSection(SolutionItems) = preProject
-		blank.json = blank.json
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
