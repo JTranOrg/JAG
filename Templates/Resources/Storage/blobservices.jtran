@@ -1,0 +1,29 @@
+{
+  "#element(blobservices)":
+  {
+     "type":        "Microsoft.Storage/storageAccounts/blobServices",
+     "apiVersion":  "2023-05-01",
+     "name":        "[concat(StorageName, '/default')]",
+     "dependsOn": 
+     [
+         "[resourceId('Microsoft.Storage/storageAccounts', StorageName)]"
+     ],
+     "sku": 
+     {
+  		 "name":			        "#(coalesce(Sku.Name, 'Standard_LRS'))",
+  		 "tier":			        "#(coalesce(Sku.Tier, 'Standard')"
+     },
+     "properties": 
+     {
+         "cors": 
+         {
+             "corsRules": []
+         },
+         "deleteRetentionPolicy": 
+         {
+             "allowPermanentDelete": false,
+             "enabled": false
+         }
+     }
+  }
+}
