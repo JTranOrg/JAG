@@ -1,0 +1,64 @@
+{
+  "#element(storageaccount)":
+  {
+  	"type":				        "Microsoft.Storage/storageAccounts",
+  	"apiVersion":		      "2023-05-01",
+  	"name":				        "#(Name)",
+  	"location":		        "#(Location)",
+  	"sku":
+  	{
+  	  "name":			        "#(coalesce(Sku.Name, 'Standard_LRS'))",
+  	  "tier":			        "#(coalesce(Sku.Tier, 'Standard')"
+  	},                                    
+  	"kind":				        "#(coalesce(Kind, 'StorageV2')",
+  	"properties":
+  	{
+  	  "azureFilesIdentityBasedAuthentication":
+  	  {
+  		  "directoryServiceOptions":  "None"
+  	  },
+  	  "minimumTlsVersion":		      "TLS1_2",
+  	  "allowBlobPublicAccess":	    "#(coalesce(allowBlobPublicAccess, false))",
+  	  "allowSharedKeyAccess":		    "#(coalesce(allowSharedKeyAccess, true))",
+  	  "networkAcls":
+  	  {
+  		  "bypass":				            "AzureServices",
+  		  "virtualNetworkRules":
+  		  [
+  		  ],
+  		  "ipRules":
+  		  [
+  		  ],
+  		  "defaultAction":		        "Allow"
+  	  },
+  	  "supportsHttpsTrafficOnly":   true,
+  	  "encryption":
+  	  {
+  		  "services":
+  		  {
+  			  "file":
+  			  {
+  				  "keyType":		          "Account",
+  				  "enabled":		          true
+  			  },
+  			  "blob":
+  			  {
+  				  "keyType":		          "Account",
+  				  "enabled":		          true
+  			  }
+  		  },
+  		  "keySource":			          "Microsoft.Storage"
+  	  },
+  	  "accessTier":				          "Hot"
+  	}
+  },
+
+  "#element(storageaccount-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":       "storageaccount",
+      "Name":       "#resourcename('storageaccount', //basename)"
+    }
+  }
+}

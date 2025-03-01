@@ -1,0 +1,53 @@
+{
+  "#element(keyvault)":
+  {
+    "type":       "Microsoft.KeyVault/vaults",
+    "apiVersion": "2024-04-01-preview",
+  	"name":			  "#(Name)",
+  	"location":	  "#(Location)",
+    "tags":
+    {
+      "test": "bob"
+    },
+    "properties":
+    {
+      "sku":
+      {
+        "family": "A",
+        "name": "Standard"
+      },
+      "networkAcls":
+      {
+        "bypass": "None",
+        "defaultAction": "Allow",
+        "ipRules":
+        [
+        ],
+        "virtualNetworkRules":
+        [
+        ]
+      },
+      "accessPolicies":
+      [
+      ],
+      "enabledForDeployment":         false,
+      "enabledForDiskEncryption":     false,
+      "enabledForTemplateDeployment": false,
+      "enableSoftDelete":             true,
+      "softDeleteRetentionInDays":    90,
+      "enableRbacAuthorization":      true,
+      "enablePurgeProtection":        true,
+      "vaultUri":                     "#('https://kv-' + Name + '.vault.azure.net/')",
+      "publicNetworkAccess":          "Enabled"
+    }
+  },
+
+  "#element(keyvault-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":       "keyvault",
+      "Name":       "#resourcename('keyvault', //basename)"
+    }
+  }
+}

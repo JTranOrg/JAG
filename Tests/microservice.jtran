@@ -1,0 +1,17 @@
+{
+  "#element(microservice)": 
+  {
+    "resourcegroup":
+    {
+      "basename":             "#(basename)",
+
+      "applicationinsights":  {},
+      "keyvault":             {},
+      "appserviceplan":       
+      {
+        "functionapp":        {},
+        "storageaccount":     {}
+      }
+    }
+  }
+}

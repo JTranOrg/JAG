@@ -1,0 +1,25 @@
+{
+  "#element(resourcename, resourcetype, basename)": 
+  { 
+    "return":     "#(prefix($resourcetype) + '-' + $basename)"
+  },
+
+  "#function(prefix, resourcetype)": 
+  {
+    "#variable(prefix)":        
+    {
+      "#map($resourcetype)": 
+      {
+        "#mapitem('resourcegroup')":        "rg",
+        "#mapitem('appserviceplan')":       "asp",
+        "#mapitem('storageaccount')":       "sto",
+        "#mapitem('keyvault')":             "kv",
+        "#mapitem('applicationinsights')":  "ai",
+        "#mapitem('functionapp')":          "func",
+        "#mapitem":                         "bob"
+      }
+    },
+  
+    "return":     "#($prefix)"
+  }
+}

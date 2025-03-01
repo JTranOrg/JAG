@@ -1,0 +1,54 @@
+{
+  "#element(appserviceplan)":
+  {
+    "type":       "Microsoft.Web/serverfarms",
+    "apiVersion": "2024-04-01",
+    "name":       "#(Name)",
+  	"location":	  "#(Location)",
+    "sku":
+    {
+      "name":     "F1",
+      "tier":     "Free",
+      "size":     "F1",
+      "family":   "F",
+      "capacity": 1
+    },
+    "kind": "linux",
+    "properties":
+    {
+      "perSiteScaling":             false,
+      "elasticScaleEnabled":        false,
+      "maximumElasticWorkerCount":  1,
+      "isSpot":                     false,
+      "reserved":                   true, 
+      "isXenon":                    false,
+      "hyperV":                     false,
+      "targetWorkerCount":          0,
+      "targetWorkerSizeId":         0,
+      "zoneRedundant":              false
+    }
+  },
+
+  "#element(appserviceplan-meta)":
+  {
+    "#variable(name)":      "#resourcename('appserviceplan', //basename)",
+
+    "#arrayitem(1)": 
+    {
+      "Type":               "appserviceplan",
+      "Name":               "#($name)"
+    },
+
+    "#bind(functionapp)": 
+    {
+      "#callelement('functionapp-meta')": 
+      {
+        "BaseName":           "#(///basename)",
+        "AppServicePlan":     "#($name)",
+        "Location":           "#(/Location)",
+        "ResourceGroupName":  "#(/ResourceGroupName)",
+        "Subscription":       "#(/Subscription)"
+      }
+    }
+  }
+}

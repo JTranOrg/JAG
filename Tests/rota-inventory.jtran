@@ -1,0 +1,23 @@
+{
+  "#include":    "microservice.jtran",
+
+  "#microservice()": 
+  {
+    "basename": "#('rota-inventory-' + $environment)",
+
+    "messagequeues":        
+    [
+      "nightlybatch",
+      "addperson",
+      "addflight",
+      "flightarrive"
+    ],
+
+    "databasecontainers":             
+    [
+      "flights",
+      "persons",
+      "ships"
+    ]
+  }
+}

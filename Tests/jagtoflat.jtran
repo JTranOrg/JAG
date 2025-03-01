@@ -1,0 +1,28 @@
+{
+  "#include":  "*",
+
+  "#variable(basename)":          "#(resourcegroup.basename)",
+  "#variable(location)":          "westus2",
+  "#variable(resources)":         "#exclude(resourcegroup, basename)",
+  "#variable(resourcegroupname)": "#('rg-' + $basename)",
+  "#variable(subscription)":      "12345678",
+
+  "Location":                     "#($location)",
+  "ResourceGroupName":            "#($resourcegroupname)",
+  "Subscription":                 "#($subscription)",
+
+  "#array(resources)": 
+  {
+    "#foreach($resources)": 
+    {
+      "#callelement(name() + '-meta')":
+      {
+        "Name":               "#($basename)",
+        "Location":           "#($location)",
+        "ResourceGroupName":  "#($resourcegroupname)",
+        "Subscription":       "#($subscription)",
+        "#noobject":          "#(@)"
+      }
+    }
+  }
+}
