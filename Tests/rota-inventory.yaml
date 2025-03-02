@@ -4,7 +4,7 @@ trigger: none
 pr: none
 
 pool:
-   name: Default
+   name: 'Azure Pipelines'
 
 jobs:
  - job: create_arm_dev
