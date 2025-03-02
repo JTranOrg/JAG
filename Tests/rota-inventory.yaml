@@ -14,7 +14,7 @@ jobs:
        inputs:
          InputSourcePath:            $(Build.SourcesDirectory)/Tests/blanksource.json
          TransformPath:              $(Build.SourcesDirectory)/Tests/rota-inventory.jtran
-         IncludePath:                $(Build.SourcesDirectory)/Tests/microservice.jtran'
+         IncludePath:                $(Build.SourcesDirectory)/Tests/microservice.jtran
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.jag
          MultipleOutput:             false
          TransformParameters:        '-environment dev'
