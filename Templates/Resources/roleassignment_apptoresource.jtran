@@ -1,0 +1,33 @@
+{
+  "#element(roleassignment_apptoresource)":
+  {
+      "type":       "Microsoft.Authorization/roleAssignments",
+      "apiVersion": "2022-04-01",
+      "scope":      "#(Scope)",
+      "name":       "#(Name)",
+      "properties": 
+      {
+        "roleDefinitionId": "#(RoleDefinitionId)",
+        "principalId":      "#(PrincipalId)"
+      },
+      "dependsOn": 
+      [
+        "#(AppResourceId)",
+        "#(ResourceId)"
+      ]
+  },
+
+  "#element(roleassignment_apptoresource-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":               "roleassignment_apptoresource",
+      "Name":               "#(Name)",
+      "Scope":              "#(Scope)",
+      "PrincipalId":        "#(PrincipalId)",
+      "RoleDefinitionId":   "#(RoleDefinitionId)",
+      "AppResourceId":      "#(AppResourceId)",
+      "ResourceId":         "#(ResourceId)"
+    }
+  }
+}

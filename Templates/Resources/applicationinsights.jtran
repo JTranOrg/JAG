@@ -5,6 +5,10 @@
     "apiVersion": "2020-02-02",
     "name":       "#(Name)",
     "location":   "#($location)",
+    "dependsOn": 
+    [
+        "#resourceid('Microsoft.OperationalInsights/workspaces', WorkspaceName)"
+    ],
     "kind":       "web",
     "properties": 
     {

@@ -6,6 +6,15 @@
     "name":         "#(Name)", 
     "location":     "#($location)",    
     "kind":         "functionapp,linux",
+    "#array(dependsOn)": 
+    {
+      "#arrayitem(1)": "#resourceid('Microsoft.Web/serverfarms', AppServicePlan)",
+
+      "#if(stringlength(StorageAccountName) != 0)":
+      {
+        "#arrayitem(2)": "#resourceid('Microsoft.Storage/storageAccounts', StorageAccountName)"
+      }
+    },
     "properties":
     {
       "enabled": true,
@@ -94,10 +103,12 @@
 
   "#element(functionapp-meta)":
   {
+    "#variable(functionAppName)":  "#resourcename('functionapp', coalesce(BaseName, //basename))",
+
     "#arrayitem(1)": 
     {
       "Type":                   "functionapp",
-      "Name":                   "#resourcename('functionapp', coalesce(BaseName, //basename))",
+      "Name":                   "#($functionAppName)",
       "AppServicePlan":         "#(AppServicePlan)",
       "StorageAccountName":     "#(StorageAccountName)",
       "AppInsightsName":        "#(AppInsightsName)",
@@ -106,6 +117,18 @@
       {
         "ServiceBusNamespace":    "#(ServiceBusNamespace)"
       }
+    },
+
+    "#callelement('roleassignment_apptoresource-meta')": 
+    {
+      "#variable(roleDefinitionId)":  "#(roledefinitionid('Storage Blob Data Owner'))",
+
+      "Name":                         "#roleassignmentname('Storage Blob Data Owner')",
+      "Scope":                        "#('Microsoft.Storage/storageAccounts/' + StorageAccountName)",
+      "PrincipalId":                  "#appserviceprincipalid($functionAppName)",
+      "RoleDefinitionId":             "#($roleDefinitionId)",
+      "AppResourceId":                "#resourceid('Microsoft.Web/sites', $functionAppName)",
+      "ResourceId":                   "#resourceid('Microsoft.Storage/storageAccounts', StorageAccountName)"
     }
   }
 } 

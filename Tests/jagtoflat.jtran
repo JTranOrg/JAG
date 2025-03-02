@@ -6,7 +6,6 @@
   "#variable(resources)":         "#exclude(resourcegroup, basename)",
   "#variable(resourcegroupname)": "#('rg-' + $basename)",
   "#variable(subscription)":      "12345678",
-  "#variable(root)":              "#(resourcegroup)",
 
   "Location":                     "#($location)",
   "ResourceGroupName":            "#($resourcegroupname)",
@@ -16,7 +15,7 @@
   {
     "#foreach($resources)": 
     {
-      "#callelement(name() + '-meta', $root)":
+      "#callelement(name() + '-meta')":
       {
         "Name":               "#($basename)",
         "#noobject":          "#(@)"

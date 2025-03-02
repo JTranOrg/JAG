@@ -106,7 +106,8 @@ namespace JAG.UnitTests
             "functionapp",
             "servicebus",
             "servicebusqueue",
-            "loganalyticsworkspace"
+            "loganalyticsworkspace",
+            "roleassignment_apptoresource"
         };
 
         public static TransformerBuilder AddResources(this TransformerBuilder builder)

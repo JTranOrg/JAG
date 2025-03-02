@@ -1,15 +1,69 @@
 {
   "#element(resourceid, type, name)":
   {
-    "#variable(singleQuote)":         "'",
+    "return":  "#(bracketit(resourceid($type, $name)))"
+  },
 
-    "return":  "#('[resourceid(' + $singleQuote + $type + $singleQuote + ', ' + $singleQuote  + $name + $singleQuote + ')]')"
+  "#function(function2params, fnName, param1, param2)":
+  {
+    "return":  "#($fnName + '(' + $param1 + ', ' + $param2 + ')')"
+  },
+
+  "#function(function3params, fnName, param1, param2, param3)":
+  {
+    "return":  "#($fnName + '(' + $param1 + ', ' +  $param2 + ', ' + $param3 + ')')"
+  },
+
+  "#function(resourceid, type, name)":
+  {
+    "return":  "#(function2params('resourceid', quoteit($type), quoteit($name)))"
+  },
+
+  "#function(quoteit, value)":
+  {
+    "#variable(singleQuote)": "'",
+
+    "return":  "#($singleQuote + $value + $singleQuote)"
+  },
+
+  "#function(bracketit, value)":
+  {
+    "return":  "#('[' + $value + ']')"
+  },
+
+  "#element(appserviceprincipalid, name)":
+  {
+    "#variable(resourceId)":  "#(resourceid('Microsoft.Web/sites', $name))",
+    "#variable(referenceId)": "#(function3params('reference', $resourceId, quoteit('2022-03-01'), quoteit('full')))",
+
+    "return":  "#($referenceId + '.identity.principalId]')"
   },
 
   "#element(appinsightsconnectionstring, name)":
   {
-    "#variable(singleQuote)":         "'",
+    "#variable(resourceId)":  "#(resourceid('Microsoft.Insights/components', $name))",
 
-    "return":  "#('[reference(resourceId(' + $singleQuote + 'Microsoft.Insights/components' + $singleQuote + ', ' + $singleQuote + $name + $singleQuote + ', ' + $singleQuote + '2020-02-02' + $singleQuote + ').ConnectionString)]')"
+    "return":  "#(bracketit(function2params('reference', $resourceId, quoteit('2020-02-02')) + '.ConnectionString'))"
+  },
+
+  "#function(roledefinitionid, name)":
+  {
+    "return":        
+    {
+      "#map($name)": 
+      {
+        "#mapitem('Storage Blob Data Owner')":  "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",
+        "#mapitem":                             ""
+      }
+    }
+  },
+
+  "#element(roleassignmentname, roleName)":
+  {
+      "#variable(roleDefinitionId)":       "#(roledefinitionid($roleName))",
+      "#variable(roleDefinitions)":        "Microsoft.Authorization/roleDefinitions",
+      "#variable(subscriptionResourceId)": "#(function2params('subscriptionResourceId', quoteit($roleDefinitions), quoteit($roleDefinitionId)))",
+
+      "return":                            "#(bracketit(function2params('guid', 'resourceGroup().id', $subscriptionResourceId)))"
   }
 }
