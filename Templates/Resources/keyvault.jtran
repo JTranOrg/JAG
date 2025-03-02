@@ -4,7 +4,7 @@
     "type":       "Microsoft.KeyVault/vaults",
     "apiVersion": "2024-04-01-preview",
   	"name":			  "#(Name)",
-  	"location":	  "#(Location)",
+    "location":   "#($location)",
     "tags":
     {
       "test": "bob"

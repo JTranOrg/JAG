@@ -1,0 +1,15 @@
+{
+  "#element(resourceid, type, name)":
+  {
+    "#variable(singleQuote)":         "'",
+
+    "return":  "#('[resourceid(' + $singleQuote + $type + $singleQuote + ', ' + $singleQuote  + $name + $singleQuote + ')]')"
+  },
+
+  "#element(appinsightsconnectionstring, name)":
+  {
+    "#variable(singleQuote)":         "'",
+
+    "return":  "#('[reference(resourceId(' + $singleQuote + 'Microsoft.Insights/components' + $singleQuote + ', ' + $singleQuote + $name + $singleQuote + ', ' + $singleQuote + '2020-02-02' + $singleQuote + ').ConnectionString)]')"
+  }
+}

@@ -1,5 +1,7 @@
-﻿using JTran.Extensions;
+﻿using JTran;
+using JTran.Extensions;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 
 namespace JAG.UnitTests
@@ -48,12 +50,9 @@ namespace JAG.UnitTests
             var template = LoadTemplate("jagtoflat.jtran");
             var result   = JTran.TransformerBuilder
                                 .FromString(template)
-                                .AddInclude("resourcename",      LoadInclude("resourcename.jtran"))
-                                .AddInclude("storage",           LoadResourceInclude("storageaccount.jtran"))
-                                .AddInclude("appinsights",       LoadResourceInclude("applicationinsights.jtran"))
-                                .AddInclude("keyvault",          LoadResourceInclude("keyvault.jtran"))
-                                .AddInclude("appserviceplan",    LoadResourceInclude("appserviceplan.jtran"))
-                                .AddInclude("functionapp",       LoadResourceInclude("functionapp.jtran"))
+                                .AddInclude("resourcename",  LoadInclude("resourcename.jtran"))
+                                .AddInclude("helpers",       LoadInclude("helpers.jtran"))
+                                .AddResources()
                                 .Build<string>()
                                 .Transform(jagFile);
 
@@ -65,12 +64,9 @@ namespace JAG.UnitTests
             var template = LoadTemplate("jagtoarm.jtran");
             var result   = JTran.TransformerBuilder
                                 .FromString(template)
-                                .AddInclude("resourcename",      LoadInclude("resourcename.jtran"))
-                                .AddInclude("storage",           LoadResourceInclude("storageaccount.jtran"))
-                                .AddInclude("appinsights",       LoadResourceInclude("applicationinsights.jtran"))
-                                .AddInclude("keyvault",          LoadResourceInclude("keyvault.jtran"))
-                                .AddInclude("appserviceplan",    LoadResourceInclude("appserviceplan.jtran"))
-                                .AddInclude("functionapp",       LoadResourceInclude("functionapp.jtran"))
+                                .AddInclude("resourcename",  LoadInclude("resourcename.jtran"))
+                                .AddInclude("helpers",       LoadInclude("helpers.jtran"))
+                                .AddResources()
                                 .Build<string>()
                                 .Transform(jagFile);
 
@@ -83,25 +79,42 @@ namespace JAG.UnitTests
             
             return File.ReadAllText(path);
         }
-        private string LoadResourceInclude(string fileName)
+
+        public static string LoadResourceInclude(string fileName)
         {
             var path = Path.Combine(Assembly.GetExecutingAssembly().Location.SubstringBefore("\\bin"), "..\\Templates\\Resources\\" + fileName);
             
             return File.ReadAllText(path);
         }
 
-        private string LoadTemplate(string fileName)
+        private static string LoadTemplate(string fileName)
         {
             var path = Path.Combine(Assembly.GetExecutingAssembly().Location.SubstringBefore("\\bin"), "..\\Tests\\" + fileName);
             
             return File.ReadAllText(path);
         }
+    }
 
-        private string LoadTest(string fileName)
+    public static class Extensions
+    {
+        private static List<string> _includes = new List<string>
         {
-            var path = Path.Combine(Assembly.GetExecutingAssembly().Location.SubstringBefore("\\bin"), "..\\Tests", fileName);
-            
-            return File.ReadAllText(path);
+            "storageaccount",
+            "applicationinsights",
+            "keyvault",
+            "appserviceplan",
+            "functionapp",
+            "servicebus",
+            "servicebusqueue",
+            "loganalyticsworkspace"
+        };
+
+        public static TransformerBuilder AddResources(this TransformerBuilder builder)
+        {
+            foreach(var res in _includes)
+                builder.AddInclude(res, MicroServiceTests.LoadResourceInclude($"{res}.jtran"));
+
+            return builder;
         }
     }
 }

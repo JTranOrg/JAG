@@ -1,0 +1,40 @@
+{
+  "#element(servicebusqueue)":
+  {
+    "type":               "Microsoft.ServiceBus/namespaces/queues",
+    "apiVersion":         "2024-01-01",
+  	"name":				        "#(Name)",
+    "location":           "#($location)",
+    "dependsOn": 
+    [
+        "#resourceid('Microsoft.ServiceBus/namespaces', ServiceBusNamespace)"
+    ],
+    "properties":
+    {
+        "maxMessageSizeInKilobytes":            "#(coalescenumber(maxMessageSizeInKilobytes, 256))",
+        "lockDuration":                         "#(coalesce(lockDuration, 'PT5M'))",
+        "maxSizeInMegabytes":                   "#(coalescenumber(maxSizeInMegabytes, 1024))",
+        "requiresDuplicateDetection":           "#(coalescebool(requiresDuplicateDetection, false))",
+        "requiresSession":                      "#(coalescebool(requiresSession, false))",
+        "defaultMessageTimeToLive":             "#(coalesce(defaultMessageTimeToLive, 'P2D'))",
+        "deadLetteringOnMessageExpiration":     "#(coalescebool(deadLetteringOnMessageExpiration, true))",
+        "enableBatchedOperations":              "#(coalescebool(enableBatchedOperations, false))",
+        "duplicateDetectionHistoryTimeWindow":  "#(coalesce(duplicateDetectionHistoryTimeWindow, 'PT10M'))",
+        "maxDeliveryCount":                     "#(coalescenumber(maxDeliveryCount, 20))",
+        "status":                               "Active",
+        "autoDeleteOnIdle":                     "#(coalesce(autoDeleteOnIdle, 'P10675199DT2H48M5.4775807S'))",
+        "enablePartitioning":                   "#(coalescebool(enablePartitioning, false))",
+        "enableExpress":                        "#(coalescebool(enableExpress, false))"
+    }
+  },
+
+  "#element(servicebusqueue-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":       "servicebusqueue",
+      "Name":       "#(Name)",
+      "ServiceBusNamespace":   "#(ServiceBusNamespace)"
+    }
+  }
+}

@@ -10,13 +10,15 @@
     {
       "#map($resourcetype)": 
       {
-        "#mapitem('resourcegroup')":        "rg",
-        "#mapitem('appserviceplan')":       "asp",
-        "#mapitem('storageaccount')":       "sto",
-        "#mapitem('keyvault')":             "kv",
-        "#mapitem('applicationinsights')":  "ai",
-        "#mapitem('functionapp')":          "func",
-        "#mapitem":                         "bob"
+        "#mapitem('resourcegroup')":          "rg",
+        "#mapitem('appserviceplan')":         "asp",
+        "#mapitem('storageaccount')":         "sto",
+        "#mapitem('keyvault')":               "kv",
+        "#mapitem('applicationinsights')":    "ai",
+        "#mapitem('loganalyticsworkspace')":  "ai",
+        "#mapitem('functionapp')":            "func",
+        "#mapitem('servicebus')":             "sb",
+        "#mapitem":                           ""
       }
     },
   

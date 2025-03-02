@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JAG.UnitTests", "JAG.UnitTe
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{AD8CAD06-EBC4-4E5F-A58B-E747D9629547}"
 	ProjectSection(SolutionItems) = preProject
+		Templates\helpers.jtran = Templates\helpers.jtran
 		Templates\resourcename.jtran = Templates\resourcename.jtran
 	EndProjectSection
 EndProject
@@ -17,6 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 		Templates\Resources\blobservices.jtran = Templates\Resources\blobservices.jtran
 		Templates\Resources\functionapp.jtran = Templates\Resources\functionapp.jtran
 		Templates\Resources\keyvault.jtran = Templates\Resources\keyvault.jtran
+		Templates\Resources\loganalyticsworkspace.jtran = Templates\Resources\loganalyticsworkspace.jtran
+		Templates\Resources\servicebus.jtran = Templates\Resources\servicebus.jtran
+		Templates\Resources\servicebusqueue.jtran = Templates\Resources\servicebusqueue.jtran
 		Templates\Resources\storageaccount.jtran = Templates\Resources\storageaccount.jtran
 	EndProjectSection
 EndProject

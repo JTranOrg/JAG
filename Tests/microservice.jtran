@@ -5,12 +5,24 @@
     {
       "basename":             "#(basename)",
 
-      "applicationinsights":  {},
+      "loganalyticsworkspace": 
+      {
+        "applicationinsights":  {}
+      },
+
       "keyvault":             {},
       "appserviceplan":       
       {
         "functionapp":        {},
         "storageaccount":     {}
+      },
+
+      "#if(messagequeues)": 
+      {
+        "servicebus": 
+        {
+          "queues":  "#(messagequeues)"
+        }
       }
     }
   }

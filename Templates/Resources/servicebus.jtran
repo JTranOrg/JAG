@@ -1,0 +1,43 @@
+{
+  "#element(servicebus)":
+  {
+    "type":       "Microsoft.ServiceBus/namespaces",
+    "apiVersion": "2024-01-01",
+    "name":       "#(Name)",
+    "location":   "#($location)",
+    "sku": 
+    {
+        "name": "Basic",
+        "tier": "Basic"
+    },
+    "properties": 
+    {
+        "premiumMessagingPartitions":   0,
+        "minimumTlsVersion":            "1.2",
+        "publicNetworkAccess":          "Enabled",
+        "disableLocalAuth":             false,
+        "zoneRedundant":                false
+    }
+  },
+
+  "#element(servicebus-meta)":
+  {
+    "#variable(ServiceBusNamespace)":  "#resourcename('servicebus', //basename)",
+
+    "#arrayitem(1)": 
+    {
+      "Type":       "servicebus",
+      "Name":       "#($ServiceBusNamespace)"
+    },
+    
+    "#foreach(queues)": 
+    {
+      "#callelement('servicebusqueue-meta')": 
+      {
+        "Name": "#(@)",
+        "ServiceBusNamespace":  "#($ServiceBusNamespace)"
+      }
+    }
+
+  }
+}

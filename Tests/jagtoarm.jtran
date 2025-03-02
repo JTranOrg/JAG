@@ -4,6 +4,10 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
 
+  "#variable(location)":          "#(Location)",
+  "#variable(resourcegroupname)": "#(ResourceGroupName)",
+  "#variable(subscription)":      "#(Subscription)",
+
   "#array(resources)": 
   {
     "#foreach(resources)": 
@@ -13,9 +17,6 @@
         "#callelement(Type)":
         {
           "Name":               "#(Name)",
-          "Location":           "#(Location)",
-          "ResourceGroupName":  "#(ResourceGroupName)",
-          "Subscription":       "#(Subscription)",
           "#noobject":          "#(@)"
         }
       }

@@ -1,0 +1,49 @@
+{
+  "#element(loganalyticsworkspace)":
+  {
+    "type":         "Microsoft.OperationalInsights/workspaces",
+    "apiVersion":   "2023-09-01",
+    "name":         "#(Name)",
+    "location":     "#($location)",
+    "properties":   
+    {
+      "sku": 
+      {
+          "name": "PerGB2018"
+      },
+      "retentionInDays": 30,
+      "features": 
+      {
+          "legacy": 0,
+          "searchVersion": 1,
+          "enableLogAccessUsingOnlyResourcePermissions": true
+      },
+      "workspaceCapping": 
+      {
+          "dailyQuotaGb": -1
+      },
+      "publicNetworkAccessForIngestion": "Enabled",
+      "publicNetworkAccessForQuery": "Enabled"
+    }
+  },
+
+  "#element(loganalyticsworkspace-meta)":
+  {
+    "#variable(workspaceName)":  "#resourcename('loganalyticsworkspace', //basename)",
+
+    "#arrayitem(1)": 
+    {
+      "Type":           "loganalyticsworkspace",
+      "Name":           "#($workspaceName)"
+    },
+
+    "#bind(applicationinsights)": 
+    {
+      "#callelement('applicationinsights-meta')": 
+      {
+        "BaseName":             "#(///basename)",
+        "WorkspaceName":        "#($workspaceName)"
+      }
+    }
+  }
+}

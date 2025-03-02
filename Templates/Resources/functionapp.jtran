@@ -4,7 +4,7 @@
     "type":         "Microsoft.Web/sites",
     "apiVersion":   "2024-04-01",
     "name":         "#(Name)", 
-    "location":     "#(Location)",    
+    "location":     "#($location)",    
     "kind":         "functionapp,linux",
     "properties":
     {
@@ -22,7 +22,7 @@
           "hostType":                   "Repository"
         }
       ],
-      "serverFarmId":                   "#('/subscriptions/' + Subscription + '/resourceGroups/' + ResourceGroupName + '/providers/Microsoft.Web/serverfarms/' + AppServicePlan)",
+      "serverFarmId":                   "#('/subscriptions/' + $subscription + '/resourceGroups/' + $resourcegroupname + '/providers/Microsoft.Web/serverfarms/' + AppServicePlan)",
       "reserved":                       true,
       "isXenon":                        false,
       "hyperV":                         false,
@@ -40,7 +40,38 @@
         "alwaysOn":                     true,
         "http20Enabled":                false,
         "functionAppScaleLimit":        0,
-        "minimumElasticInstanceCount":  0
+        "minimumElasticInstanceCount":  0,
+        "#array(appSettings)": 
+        {
+          "#arrayitem(1)":
+          {
+            "name":     "APPLICATIONINSIGHTS_CONNECTION_STRING",
+            "value":    "#appinsightsconnectionstring(AppInsightsName)"
+          }, 
+          "#arrayitem(2)":
+          {
+            "name":     "AzureWebJobsStorage__accountName",
+            "value":    "#(StorageAccountName)"
+          },
+          "#arrayitem(3)":
+          {
+            "name":     "FUNCTIONS_EXTENSION_VERSION",
+            "value":    "~4"
+          },
+          "#arrayitem(4)":
+          {        
+             "name":    "FUNCTIONS_WORKER_RUNTIME",
+             "value":   "dotnet-isolated"
+          },
+          "#if(stringlength(ServiceBusNamespace) != 0)": 
+          {
+            "#arrayitem(5)":
+            {
+              "name":    "ServiceBusConnection__fullyQualifiedNamespace",
+              "value":   "#(ServiceBusNamespace + '.servicebus.windows.net')"
+            }
+          }
+        }
       },
       "scmSiteAlsoStopped":             false,
       "clientAffinityEnabled":          false,
@@ -65,12 +96,16 @@
   {
     "#arrayitem(1)": 
     {
-      "Type":               "functionapp",
-      "Name":               "#resourcename('functionapp', coalesce(BaseName, //basename)",
-      "AppServicePlan":     "#(AppServicePlan)",
-      "Location":           "#(Location)",
-      "ResourceGroupName":  "#(ResourceGroupName)",
-      "Subscription":       "#(Subscription)"
+      "Type":                   "functionapp",
+      "Name":                   "#resourcename('functionapp', coalesce(BaseName, //basename))",
+      "AppServicePlan":         "#(AppServicePlan)",
+      "StorageAccountName":     "#(StorageAccountName)",
+      "AppInsightsName":        "#(AppInsightsName)",
+
+      "#if(stringlength(ServiceBusNamespace) != 0)": 
+      {
+        "ServiceBusNamespace":    "#(ServiceBusNamespace)"
+      }
     }
   }
 } 

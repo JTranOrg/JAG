@@ -1,0 +1,31 @@
+{
+  "#element(appsettings)":
+  {
+    "type": "Microsoft.Web/sites/config",
+    "apiVersion": "2022-03-01",
+  	"name":				        "#(Name)",
+    "properties": 
+    {
+      "AzureWebJobsStorage": "[format('DefaultEndpointsProtocol=https;AccountName={0};EndpointSuffix={1};AccountKey={2}', variables('storageAccountName'), environment().suffixes.storage, listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2021-09-01').keys[0].value)]",
+      "APPINSIGHTS_INSTRUMENTATIONKEY": "[reference(resourceId('Microsoft.Insights/components', variables('applicationInsightsName')), '2020-02-02').InstrumentationKey]",
+      "FUNCTIONS_EXTENSION_VERSION": "~4",
+      "ftpsState": "Disabled",
+      "minTlsVersion": "1.2"
+    },
+    "dependsOn": 
+    [
+      "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]",
+      "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]",
+      "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+    ]
+  },
+
+  "#element(appsettings-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":       "storageaccount",
+      "Name":       "#resourcename('storageaccount', //basename)"
+    }
+  }
+}

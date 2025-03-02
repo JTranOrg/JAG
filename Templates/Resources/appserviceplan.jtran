@@ -4,7 +4,7 @@
     "type":       "Microsoft.Web/serverfarms",
     "apiVersion": "2024-04-01",
     "name":       "#(Name)",
-  	"location":	  "#(Location)",
+    "location":   "#($location)",
     "sku":
     {
       "name":     "F1",
@@ -29,7 +29,7 @@
     }
   },
 
-  "#element(appserviceplan-meta)":
+  "#element(appserviceplan-meta, root)":
   {
     "#variable(name)":      "#resourcename('appserviceplan', //basename)",
 
@@ -43,11 +43,15 @@
     {
       "#callelement('functionapp-meta')": 
       {
-        "BaseName":           "#(///basename)",
-        "AppServicePlan":     "#($name)",
-        "Location":           "#(/Location)",
-        "ResourceGroupName":  "#(/ResourceGroupName)",
-        "Subscription":       "#(/Subscription)"
+        "BaseName":             "#(///basename)",
+        "AppServicePlan":       "#($name)",
+        "AppInsightsName":      "#resourcename('applicationinsights', ///basename)",
+        "StorageAccountName":   "#resourcename('storageaccount', ///basename)",
+
+        "#if(/servicebus != null)": 
+        {
+          "ServiceBusNamespace":  "#resourcename('servicebus', ///basename)"
+        }
       }
     }
   }
