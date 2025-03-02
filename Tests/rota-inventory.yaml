@@ -9,6 +9,7 @@ pool:
 jobs:
  - job: create_arm_dev
    steps:
+     - checkout: self
      - task: JTranTransform@1.0.2
        displayName: 'Create JAG Manifest'
        inputs:
