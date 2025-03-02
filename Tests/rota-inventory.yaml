@@ -12,7 +12,7 @@ jobs:
      - task: JTranTransform@1.0.2
        displayName: 'Create JAG Manifest'
        inputs:
-         InputSourcePath:            $(Build.SourcesDirectory)/Tests/blanksource.json
+         InputSourcePath:            $(Build.SourcesDirectory)/Tests/blank.json
          TransformPath:              $(Build.SourcesDirectory)/Tests/rota-inventory.jtran
          IncludePath:                $(Build.SourcesDirectory)/Tests/microservice.jtran
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.jag
