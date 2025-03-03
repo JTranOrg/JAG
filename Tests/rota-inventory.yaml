@@ -14,7 +14,7 @@ jobs:
        displayName: 'Create JAG Manifest'
        inputs:
          InputSourcePath:            $(Build.SourcesDirectory)/Tests/blank.json
-         TransformPath:              $(Build.SourcesDirectory)/Tests/rota-inventory.jtran
+         TransformPath:              $(Build.SourcesDirectory)/Tests/Includes
          IncludePath:                $(Build.SourcesDirectory)/Tests/microservice.jtran
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.jag
          MultipleOutput:             false
@@ -25,7 +25,7 @@ jobs:
        inputs:
          InputSourcePath:            $(Build.ArtifactStagingDirectory)/rota-inventory.jag
          TransformPath:              $(Build.SourcesDirectory)/Tests/jag2flat.jtran
-         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/*.*
+         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.flat
          MultipleOutput:             false
          TransformParameters:        '-environment dev'
@@ -35,7 +35,7 @@ jobs:
        inputs:
          InputSourcePath:            $(Build.ArtifactStagingDirectory)/rota-inventory.flat
          TransformPath:              $(Build.SourcesDirectory)/Tests/jag2arm.jtran
-         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/*.*
+         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.arm
          MultipleOutput:             false
          TransformParameters:        '-environment dev'

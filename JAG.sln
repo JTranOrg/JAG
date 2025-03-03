@@ -43,6 +43,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Yaml", "Yaml", "{2EECEDF5-4
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Output", "Output", "{EA03E792-1C18-4C1C-9C39-7E9AEE5A9EC8}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Includes", "Includes", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		Tests\microservice.jtran = Tests\microservice.jtran
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +66,7 @@ Global
 		{BD0B61C2-1D1D-45C4-A0BA-134779EE4569} = {AD8CAD06-EBC4-4E5F-A58B-E747D9629547}
 		{2EECEDF5-43EB-4CE6-8323-D071F4F5F71D} = {AD8CAD06-EBC4-4E5F-A58B-E747D9629547}
 		{EA03E792-1C18-4C1C-9C39-7E9AEE5A9EC8} = {94988910-E191-45C3-9844-A156DCF63C31}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {94988910-E191-45C3-9844-A156DCF63C31}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E0D633B7-0262-404E-A6FB-5C01A3175BD4}
