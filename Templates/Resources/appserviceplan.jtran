@@ -47,6 +47,7 @@
         "AppServicePlan":       "#($name)",
         "AppInsightsName":      "#resourcename('applicationinsights', ///basename)",
         "StorageAccountName":   "#resourcename('storageaccount', ///basename)",
+        "KeyvaultName":         "#resourcename('keyvault', ///basename)",
 
         "#if(/servicebus != null)": 
         {

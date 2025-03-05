@@ -116,6 +116,11 @@
       "#if(stringlength(ServiceBusNamespace) != 0)": 
       {
         "ServiceBusNamespace":    "#(ServiceBusNamespace)"
+      },
+
+      "#if(stringlength(KeyvaultName) != 0)": 
+      {
+        "KeyvaultName":    "#(KeyvaultName)"
       }
     },
 
@@ -129,6 +134,21 @@
       "RoleDefinitionId":             "#($roleDefinitionId)",
       "AppResourceId":                "#resourceid('Microsoft.Web/sites', $functionAppName)",
       "ResourceId":                   "#resourceid('Microsoft.Storage/storageAccounts', StorageAccountName)"
+    },
+
+    "#if(stringlength(KeyvaultName) != null)": 
+    {
+      "#callelement('roleassignment_apptoresource-meta')": 
+      {
+        "#variable(roleDefinitionId)":  "#(roledefinitionid('Key Vault Secrets User'))",
+
+        "Name":                         "#roleassignmentname('Key Vault Secrets User')",
+        "Scope":                        "#('Microsoft.KeyVault/vaults/' + KeyvaultName)",
+        "PrincipalId":                  "#appserviceprincipalid($functionAppName)",
+        "RoleDefinitionId":             "#($roleDefinitionId)",
+        "AppResourceId":                "#resourceid('Microsoft.Web/sites', $functionAppName)",
+        "ResourceId":                   "#resourceid('Microsoft.KeyVault/vaults/', KeyvaultName)"
+      }
     }
   }
 } 
