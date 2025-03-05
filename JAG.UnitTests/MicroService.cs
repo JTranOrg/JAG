@@ -34,7 +34,7 @@ namespace JAG.UnitTests
         private string CreateJAGFile(string name, string environment)
         {
             var template = LoadTemplate(name + ".jtran");
-            var include = LoadTemplate("microservice.jtran");
+            var include = LoadTemplate("Includes\\microservice.jtran");
             var result  = JTran.TransformerBuilder
                                .FromString(template)
                                .AddInclude("microservice.jtran", include)

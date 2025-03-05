@@ -1,6 +1,0 @@
-{
-  "#function(ResourceName, suffix, type)":
-  {
-      "return": "#($org + '-' + $environment.shortname + '-' + $region.prefix + '-' + $application + '-' + $suffix + '-' + $type)"
-  }
-}

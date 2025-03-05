@@ -24,7 +24,7 @@ jobs:
        displayName: 'Create Flat File'
        inputs:
          InputSourcePath:            $(Build.ArtifactStagingDirectory)/rota-inventory.jag
-         TransformPath:              $(Build.SourcesDirectory)/Tests/jag2flat.jtran
+         TransformPath:              $(Build.SourcesDirectory)/Tests/jagtoflat.jtran
          IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.flat
          MultipleOutput:             false
@@ -34,7 +34,7 @@ jobs:
        displayName: 'Create ARM Template'
        inputs:
          InputSourcePath:            $(Build.ArtifactStagingDirectory)/rota-inventory.flat
-         TransformPath:              $(Build.SourcesDirectory)/Tests/jag2arm.jtran
+         TransformPath:              $(Build.SourcesDirectory)/Tests/jagtoarm.jtran
          IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.arm
          MultipleOutput:             false
