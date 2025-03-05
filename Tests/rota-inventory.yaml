@@ -15,27 +15,39 @@ jobs:
        inputs:
          InputSourcePath:            $(Build.SourcesDirectory)/Tests/blank.json
          TransformPath:              $(Build.SourcesDirectory)/Tests/rota-inventory.jtran
-         IncludePath:                $(Build.SourcesDirectory)/Tests/Includes/microservice.jtran
+         IncludePath:                $(Build.SourcesDirectory)/Tests/Includes
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.jag
          MultipleOutput:             false
          TransformParameters:        '-environment dev'
+
+     - task: PowerShell@2
+       displayName: 'Display JAG Manifest Output'
+       inputs:
+         targetType: 'inline'
+         script:     Get-Content "$(Build.ArtifactStagingDirectory)/rota-inventory.jag" | Write-Output
 
      - task: JTranTransform@1.0.2
        displayName: 'Create Flat File'
        inputs:
          InputSourcePath:            $(Build.ArtifactStagingDirectory)/rota-inventory.jag
          TransformPath:              $(Build.SourcesDirectory)/Tests/jagtoflat.jtran
-         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/
+         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.flat
          MultipleOutput:             false
          TransformParameters:        '-environment dev'
+
+     - task: PowerShell@2
+       displayName: 'Display Flat File Output'
+       inputs:
+         targetType: 'inline'
+         script:     Get-Content "$(Build.ArtifactStagingDirectory)/rota-inventory.flat" | Write-Output
 
      - task: JTranTransform@1.0.2
        displayName: 'Create ARM Template'
        inputs:
          InputSourcePath:            $(Build.ArtifactStagingDirectory)/rota-inventory.flat
          TransformPath:              $(Build.SourcesDirectory)/Tests/jagtoarm.jtran
-         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources/
+         IncludePath:                $(Build.SourcesDirectory)/Templates/Resources
          OutputDestinationPath:      $(Build.ArtifactStagingDirectory)/rota-inventory.arm
          MultipleOutput:             false
          TransformParameters:        '-environment dev'
