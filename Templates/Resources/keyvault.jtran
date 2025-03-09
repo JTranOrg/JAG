@@ -11,10 +11,11 @@
     },
     "properties":
     {
+      "tenantId":  "[subscription().tenantId]",     
       "sku":
       {
-        "family": "A",
-        "name": "Standard"
+        "family": "#(coalesce(sku.family, 'A'))",
+        "name":   "#(coalesce(sku.name, 'Standard'))"
       },
       "networkAcls":
       {
@@ -37,7 +38,7 @@
       "softDeleteRetentionInDays":    90,
       "enableRbacAuthorization":      true,
       "enablePurgeProtection":        true,
-      "vaultUri":                     "#('https://kv-' + Name + '.vault.azure.net/')",
+      "vaultUri":                     "#('https://' + Name + '.vault.azure.net/')",
       "publicNetworkAccess":          "Enabled"
     }
   },

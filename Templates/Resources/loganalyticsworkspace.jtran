@@ -37,12 +37,15 @@
       "Name":           "#($workspaceName)"
     },
 
-    "#bind(applicationinsights)": 
+    "#if(stringlength(applicationinsights) != 0)": 
     {
-      "#callelement('applicationinsights-meta')": 
+      "#bind(applicationinsights)": 
       {
-        "BaseName":             "#(///basename)",
-        "WorkspaceName":        "#($workspaceName)"
+        "#callelement('applicationinsights-meta')": 
+        {
+          "BaseName":             "#(///basename)",
+          "WorkspaceName":        "#($workspaceName)"
+        }
       }
     }
   }

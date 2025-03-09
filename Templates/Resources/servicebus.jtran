@@ -22,7 +22,7 @@
 
   "#element(servicebus-meta)":
   {
-    "#variable(ServiceBusNamespace)":  "#resourcename('servicebus', //basename)",
+    "#variable(ServiceBusNamespace)":  "#resourcename('servicebus', basename)",
 
     "#arrayitem(1)": 
     {

@@ -1,7 +1,7 @@
 {
   "#element(applicationinsights)":
   {
-  	"type":       "microsoft.insights/components",
+  	"type":       "Microsoft.Insights/components",
     "apiVersion": "2020-02-02",
     "name":       "#(Name)",
     "location":   "#($location)",
@@ -12,14 +12,9 @@
     "kind":       "web",
     "properties": 
     {
-        "Application_Type":                 "web",
-        "Flow_Type":                        "Redfield",
-        "Request_Source":                   "IbizaAIExtension",
-        "RetentionInDays":                  90,
-        "WorkspaceResourceId":              "#('/subscriptions/' + $subscription + '/resourceGroups/' + $resourcegroupname + '/providers/Microsoft.OperationalInsights/workspaces/' + WorkspaceName)",
-        "IngestionMode":                    "LogAnalytics",
-        "publicNetworkAccessForIngestion":  "Enabled",
-        "publicNetworkAccessForQuery":      "Enabled"
+        "Application_Type":      "web",
+        "WorkspaceResourceId":   "#resourceid('Microsoft.OperationalInsights/workspaces', WorkspaceName)",
+        "IngestionMode":         "LogAnalytics"
     }
   },
 

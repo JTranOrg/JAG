@@ -4,7 +4,7 @@
   	"type":				        "Microsoft.Storage/storageAccounts",
   	"apiVersion":		      "2023-05-01",
   	"name":				        "#(Name)",
-  	"location":		        "#(Location)",
+  	"location":		        "#($location)",
   	"sku":
   	{
   	  "name":			        "#(coalesce(Sku.Name, 'Standard_LRS'))",
@@ -58,7 +58,7 @@
     "#arrayitem(1)": 
     {
       "Type":       "storageaccount",
-      "Name":       "#resourcename('storageaccount', //basename)"
+      "Name":       "#resourcename('storageaccount', basename)"
     }
   }
 }

@@ -2,12 +2,14 @@
   "#include":  "*",
 
   "#variable(basename)":          "#(resourcegroup.basename)",
-  "#variable(location)":          "westus2",
-  "#variable(resources)":         "#exclude(resourcegroup, basename)",
+  "#variable(location)":          "#(resourcegroup.region)",
+  "#variable(resources)":         "#exclude(resourcegroup, basename, region)",
+  "#variable(environment)":       "#(resourcegroup.environment)",
   "#variable(resourcegroupname)": "#('rg-' + $basename)",
-  "#variable(subscription)":      "12345678",
+  "#variable(subscription)":      "367aecbd-8fb0-4d19-9ede-100949e08ab",
+  "#variable(tenantid)":          "fc396d72-8853-47fb-b312-5d8083756ae2",
 
-  "Location":                     "#($location)",
+  "Location":                     "#(resourcegroup.region)",
   "ResourceGroupName":            "#($resourcegroupname)",
   "Subscription":                 "#($subscription)",
 
@@ -15,10 +17,13 @@
   {
     "#foreach($resources)": 
     {
-      "#callelement(name() + '-meta')":
+      "#if(name() != 'environment')": 
       {
-        "Name":               "#($basename)",
-        "#noobject":          "#(@)"
+        "#callelement(substringbefore(name(), '(') + '-meta')":
+        {
+          "Name":               "#($basename)",
+          "#noobject":          "#(@)"
+        }
       }
     }
   }

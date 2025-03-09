@@ -36,7 +36,7 @@
     "#variable(resourceId)":  "#(resourceid('Microsoft.Web/sites', $name))",
     "#variable(referenceId)": "#(function3params('reference', $resourceId, quoteit('2022-03-01'), quoteit('full')))",
 
-    "return":  "#($referenceId + '.identity.principalId]')"
+    "return":  "#('[' + $referenceId + '.identity.principalId]')"
   },
 
   "#element(appinsightsconnectionstring, name)":
@@ -61,12 +61,12 @@
     }
   },
 
-  "#element(roleassignmentname, roleName)":
+  "#element(roleassignmentname, roleName, resourceName)":
   {
       "#variable(roleDefinitionId)":       "#(roledefinitionid($roleName))",
       "#variable(roleDefinitions)":        "Microsoft.Authorization/roleDefinitions",
       "#variable(subscriptionResourceId)": "#(function2params('subscriptionResourceId', quoteit($roleDefinitions), quoteit($roleDefinitionId)))",
 
-      "return":                            "#(bracketit(function2params('guid', 'resourceGroup().id', $subscriptionResourceId)))"
+      "return":                            "#(bracketit(function2params('guid', $subscriptionResourceId, quoteit($resourceName))))"
   }
 }

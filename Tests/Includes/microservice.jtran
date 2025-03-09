@@ -3,25 +3,77 @@
   {
     "resourcegroup":
     {
-      "basename":             "#(basename)",
+      "basename":             "#(basename + '-' + $environment)",
+      "region":               "#(region)",
 
       "loganalyticsworkspace": 
       {
         "applicationinsights":  {}
       },
 
-      "keyvault":             {},
-      "appserviceplan":       
+      "keyvault":               {},
+      "appserviceplan":         
       {
-        "functionapp":        {},
-        "storageaccount":     {}
+        "sku":
+        {
+          "#if($environment == 'qa')":  
+          {
+            "name":       "B1",
+            "tier":       "Basic",
+            "size":       "B1",
+            "family":     "B",
+            "capacity":   1
+          },
+  
+          "#elseif($environment == 'stg')":  
+          {
+            "name":       "B2",
+            "tier":       "Basic",
+            "size":       "B2",
+            "family":     "B",
+            "capacity":   2
+          },
+  
+          "#elseif($environment == 'prod')":  
+          {
+            "name":       "B1",
+            "tier":       "Basic",
+            "size":       "B1",
+            "family":     "B",
+            "capacity":   1
+          },
+  
+          "#else":  
+          {
+            "name":       "B1",
+            "tier":       "Basic",
+            "size":       "B1",
+            "family":     "B",
+            "capacity":   1
+          }
+        },
+
+        "api":  {},
+
+        "functionapps": 
+        [
+          {
+            "basename":  "#(basename + '-etl-' + $environment)"
+          },
+          {
+            "basename":  "#(basename + '-transaction-' + $environment)"
+          }
+        ],
+        "storageaccount":       {}
+
       },
 
       "#if(messagequeues)": 
       {
         "servicebus": 
         {
-          "queues":  "#(messagequeues)"
+          "queues":  "#(messagequeues)",
+          "basename":  "#(basename + '-' + $environment)"
         }
       }
     }

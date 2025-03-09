@@ -3,7 +3,8 @@
 
   "#microservice()": 
   {
-    "basename": "#('rota-inventory-' + $environment)",
+    "basename": "rota-inventory",
+    "region":   "westus2",
 
     "messagequeues":        
     [

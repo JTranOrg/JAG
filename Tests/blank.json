@@ -1,3 +1,41 @@
 {
-  "whatabout":  "bob"
+  "code": "DeploymentFailed",
+  "target": "/subscriptions/367aecbd-8fb0-4d19-9ede-100949e08abc/resourceGroups/rg-rota-inventory-dev/providers/Microsoft.Resources/deployments/Microsoft.Template-20250306140820",
+  "message": "At least one resource deployment operation failed. Please list deployment operations for details. Please see https://aka.ms/arm-deployment-operations for usage details.",
+  "details":
+  [
+    {
+      "code": "InvalidTemplate",
+      "message": "Unable to process template language expressions for resource 
+      '/subscriptions/367aecbd-8fb0-4d19-9ede-100949e08abc/resourceGroups/rg-rota-inventory-dev/providers/Microsoft.Storage/storageAccounts/storotainventorydev/providers/Microsoft.Authorization/roleAssignments/11993102-3148-54eb-b2a5-5f0f267ac837' at line '205' and column '9'. 'The language expression property 'identity' doesn't exist, available properties are 'apiVersion, location, kind, properties, condition, deploymentResourceLineInfo, isConditionTrue, subscriptionId, resourceGroupName, scope, resourceId, referenceApiVersion, existing, isTemplateResource, isAction, isExtensibleResourceReference, provisioningOperation'.'",
+      "additionalInfo":
+      [
+        {
+          "type": "TemplateViolation",
+          "info":
+          {
+            "lineNumber": 205,
+            "linePosition": 9,
+            "path": ""
+          }
+        }
+      ]
+    },
+    {
+      "code": "InvalidTemplate",
+      "message": "Unable to process template language expressions for resource '/subscriptions/367aecbd-8fb0-4d19-9ede-100949e08abc/resourceGroups/rg-rota-inventory-dev/providers/Microsoft.KeyVault/vaults/kv-rota-inventory-dev/providers/Microsoft.Authorization/roleAssignments/e99acd87-91d4-5acf-850a-d2d9e3cc39e0' at line '219' and column '9'. 'The language expression property 'identity' doesn't exist, available properties are 'apiVersion, location, kind, properties, condition, deploymentResourceLineInfo, isConditionTrue, subscriptionId, resourceGroupName, scope, resourceId, referenceApiVersion, existing, isTemplateResource, isAction, isExtensibleResourceReference, provisioningOperation'.'",
+      "additionalInfo":
+      [
+        {
+          "type": "TemplateViolation",
+          "info":
+          {
+            "lineNumber": 219,
+            "linePosition": 9,
+            "path": ""
+          }
+        }
+      ]
+    }
+  ]
 }

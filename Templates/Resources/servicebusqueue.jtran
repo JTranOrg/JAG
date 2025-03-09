@@ -3,7 +3,7 @@
   {
     "type":               "Microsoft.ServiceBus/namespaces/queues",
     "apiVersion":         "2024-01-01",
-  	"name":				        "#(Name)",
+  	"name":				        "#(ServiceBusNamespace + '/' + Name)",
     "location":           "#($location)",
     "dependsOn": 
     [
@@ -22,7 +22,6 @@
         "duplicateDetectionHistoryTimeWindow":  "#(coalesce(duplicateDetectionHistoryTimeWindow, 'PT10M'))",
         "maxDeliveryCount":                     "#(coalescenumber(maxDeliveryCount, 20))",
         "status":                               "Active",
-        "autoDeleteOnIdle":                     "#(coalesce(autoDeleteOnIdle, 'P10675199DT2H48M5.4775807S'))",
         "enablePartitioning":                   "#(coalescebool(enablePartitioning, false))",
         "enableExpress":                        "#(coalescebool(enableExpress, false))"
     }
@@ -32,8 +31,8 @@
   {
     "#arrayitem(1)": 
     {
-      "Type":       "servicebusqueue",
-      "Name":       "#(Name)",
+      "Type":                  "servicebusqueue",
+      "Name":                  "#(Name)",
       "ServiceBusNamespace":   "#(ServiceBusNamespace)"
     }
   }

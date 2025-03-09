@@ -1,27 +1,35 @@
 {
   "#element(resourcename, resourcetype, basename)": 
   { 
-    "return":     "#(prefix($resourcetype) + '-' + $basename)"
+    "return":  "#(resourcename($resourcetype, $basename))"
   },
 
-  "#function(prefix, resourcetype)": 
-  {
+  "#function(resourcename, resourcetype, basename)": 
+  { 
     "#variable(prefix)":        
     {
       "#map($resourcetype)": 
       {
-        "#mapitem('resourcegroup')":          "rg",
-        "#mapitem('appserviceplan')":         "asp",
-        "#mapitem('storageaccount')":         "sto",
-        "#mapitem('keyvault')":               "kv",
+        "#mapitem('api')":                    "api",
         "#mapitem('applicationinsights')":    "ai",
-        "#mapitem('loganalyticsworkspace')":  "ai",
+        "#mapitem('appserviceplan')":         "asp",
         "#mapitem('functionapp')":            "func",
+        "#mapitem('keyvault')":               "kv",
+        "#mapitem('loganalyticsworkspace')":  "log",
+        "#mapitem('resourcegroup')":          "rg",
         "#mapitem('servicebus')":             "sb",
+        "#mapitem('storageaccount')":         "sto",
         "#mapitem":                           ""
       }
     },
-  
-    "return":     "#($prefix)"
+
+    "#if($resourcetype == 'storageaccount')":  
+    {
+      "return":     "#($prefix + replace($basename, '-', ''))"
+    },
+    "#else":
+    {
+       "return":    "#($prefix + '-' + $basename)"
+    }
   }
 }

@@ -8,6 +8,14 @@
   "#variable(resourcegroupname)": "#(ResourceGroupName)",
   "#variable(subscription)":      "#(Subscription)",
 
+  "variables":
+  {
+    "#foreach(resources[Type == 'roleassignment_apptoresource'])":
+    {
+      "#(Name)":  "#(bracketit(function2params('subscriptionResourceId', quoteit('Microsoft.Authorization/roleDefinitions'), quoteit(RoleDefinitionId))))"
+    }
+  },
+
   "#array(resources)": 
   {
     "#foreach(resources)": 

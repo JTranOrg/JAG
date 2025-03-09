@@ -4,11 +4,11 @@
       "type":       "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
       "scope":      "#(Scope)",
-      "name":       "#(Name)",
+      "name":       "#(bracketit(function3params('guid', 'resourceGroup().id', 'variables(' + quoteit(Name) + ')', quoteit(PrincipalName))))",
       "properties": 
       {
-        "roleDefinitionId": "#(RoleDefinitionId)",
-        "principalId":      "#(PrincipalId)"
+        "principalId":      "#(PrincipalId)",
+        "roleDefinitionId": "#(bracketit(function2params('subscriptionResourceId', quoteit('Microsoft.Authorization/roleDefinitions'), quoteit(RoleDefinitionId))))"
       },
       "dependsOn": 
       [
@@ -21,13 +21,16 @@
   {
     "#arrayitem(1)": 
     {
+      "#variable(name)":    "#(replace(replace(ResourceType + ResourceName + PrincipalName, '.', ''), '/', '') + iif(stringlength(Index) != 0, Index, ''))",
+
       "Type":               "roleassignment_apptoresource",
-      "Name":               "#(Name)",
-      "Scope":              "#(Scope)",
-      "PrincipalId":        "#(PrincipalId)",
-      "RoleDefinitionId":   "#(RoleDefinitionId)",
-      "AppResourceId":      "#(AppResourceId)",
-      "ResourceId":         "#(ResourceId)"
+      "Name":               "#(replace($name, '-', ''))",
+      "Scope":              "#(ResourceType + '/' + ResourceName)",
+      "PrincipalId":        "#appserviceprincipalid(PrincipalName)",
+      "PrincipalName":      "#(PrincipalName)",
+      "RoleDefinitionId":   "#(roledefinitionid(RoleName))",
+      "AppResourceId":      "#resourceid('Microsoft.Web/sites', PrincipalName)",
+      "ResourceId":         "#resourceid(ResourceType, ResourceName)"
     }
   }
 }

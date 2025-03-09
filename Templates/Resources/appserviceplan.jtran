@@ -7,11 +7,11 @@
     "location":   "#($location)",
     "sku":
     {
-      "name":     "F1",
-      "tier":     "Free",
-      "size":     "F1",
-      "family":   "F",
-      "capacity": 1
+      "name":       "#(coalesce(sku.name, 'B1')",
+      "tier":       "#(coalesce(sku.tier, 'Basic')",
+      "size":       "#(coalesce(sku.size, 'B1')",
+      "family":     "#(coalesce(sku.family, 'B')",
+      "capacity":   "#(coalescenumber(sku.capacity, 1)"
     },
     "kind": "linux",
     "properties":
@@ -29,30 +29,87 @@
     }
   },
 
-  "#element(appserviceplan-meta, root)":
+  "#element(appserviceplan-meta)":
   {
     "#variable(name)":      "#resourcename('appserviceplan', //basename)",
+
+    "#if(stringlength(storageaccount) != 0)":
+    {
+      "#bind(storageaccount)": 
+      {
+        "#callelement('storageaccount-meta')": 
+        {
+          "basename": "#(///basename)"
+        }
+      }
+    },
 
     "#arrayitem(1)": 
     {
       "Type":               "appserviceplan",
-      "Name":               "#($name)"
+      "Name":               "#($name)",
+      "sku":                "#(sku)"
     },
 
-    "#bind(functionapp)": 
+    // If there's a list of apis
+    "#foreach(apis)": 
     {
-      "#callelement('functionapp-meta')": 
-      {
-        "BaseName":             "#(///basename)",
-        "AppServicePlan":       "#($name)",
-        "AppInsightsName":      "#resourcename('applicationinsights', ///basename)",
-        "StorageAccountName":   "#resourcename('storageaccount', ///basename)",
-        "KeyvaultName":         "#resourcename('keyvault', ///basename)",
+      "#callapi()": {}
+    },
 
-        "#if(/servicebus != null)": 
-        {
-          "ServiceBusNamespace":  "#resourcename('servicebus', ///basename)"
-        }
+    // If there's just one api
+    "#if(api != null)": 
+    {
+      "#bind(api)": 
+      {
+        "#callapi()": {}
+      }
+    },
+
+    // If there's a list of function apps
+    "#foreach(functionapps)": 
+    {
+      "#callfunctionapp()": {}
+    },
+
+    // If there's just one function app
+    "#if(functionapp != null)": 
+    {
+      "#bind(functionapp)": 
+      {
+        "#callfunctionapp()": {}
+      }
+    }
+  },
+
+  "#element(callapi)":
+  {
+    "#variable(basename)":    "#(coalesce(////basename, /////basename))",
+
+    "#callelement('api-meta')": 
+    {
+      "BaseName":             "#(coalesce(basename, /basename, $basename))",
+      "AppServicePlan":       "#($name)",
+      "AppInsightsName":      "#resourcename('applicationinsights', $basename)",
+      "KeyvaultName":         "#resourcename('keyvault', $basename)"
+    }
+  },
+
+  "#element(callfunctionapp)":
+  {
+    "#variable(basename)":    "#(coalesce(////basename, /////basename))",
+
+    "#callelement('functionapp-meta')": 
+    {
+      "BaseName":             "#(coalesce(basename, /basename, $basename1, $basename))",
+      "AppServicePlan":       "#($name)",
+      "AppInsightsName":      "#resourcename('applicationinsights', $basename)",
+      "StorageAccountName":   "#resourcename('storageaccount', $basename)",
+      "KeyvaultName":         "#resourcename('keyvault', $basename)",
+
+      "#if(/////servicebus != null)": 
+      {
+        "ServiceBusNamespace":  "#resourcename('servicebus', $basename)"
       }
     }
   }

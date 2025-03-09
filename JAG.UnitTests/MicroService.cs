@@ -1,5 +1,7 @@
 ﻿using JTran;
 using JTran.Extensions;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
+using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Xml.Linq;
@@ -11,23 +13,24 @@ namespace JAG.UnitTests
     {
         [TestMethod]
         [DataRow("rota-inventory", "dev")]
+        [DataRow("rota-inventory", "stg")]
         public void MicroService_run(string name, string environment)
         {
             // First create the JAG file. JAG is a Json schema with a manifest of Azure resources to deploy
             var jag = CreateJAGFile(name, environment);
 
             Assert.IsNotNull(jag);
+            File.WriteAllText("c:\\Documents\\Testing\\JAG\\" + name + ".jag", jag);
 
-            var flat = CreateFlatManifest(jag);
+            var flat = CreateFlatManifest(jag, environment);
 
             Assert.IsNotNull(flat);
+            File.WriteAllText("c:\\Documents\\Testing\\JAG\\" + name + ".flat", flat);
 
-            var arm = CreateARMTemplate(flat);
+            var arm = CreateARMTemplate(flat, environment);
 
             Assert.IsNotNull(arm);
 
-            File.WriteAllText("c:\\Documents\\Testing\\JAG\\" + name + ".jag", jag);
-            File.WriteAllText("c:\\Documents\\Testing\\JAG\\" + name + ".flat", flat);
             File.WriteAllText("c:\\Documents\\Testing\\JAG\\" + name + ".arm", arm);
         }
 
@@ -45,13 +48,14 @@ namespace JAG.UnitTests
             return result;
         }
 
-        private string CreateFlatManifest(string jagFile)
+        private string CreateFlatManifest(string jagFile, string environment)
         {
             var template = LoadTemplate("jagtoflat.jtran");
             var result   = JTran.TransformerBuilder
                                 .FromString(template)
                                 .AddInclude("resourcename",  LoadInclude("resourcename.jtran"))
                                 .AddInclude("helpers",       LoadInclude("helpers.jtran"))
+                                .AddArguments(new Dictionary<string, object> { {"environment", environment} } )
                                 .AddResources()
                                 .Build<string>()
                                 .Transform(jagFile);
@@ -59,17 +63,18 @@ namespace JAG.UnitTests
             return result;
         }
 
-        private string CreateARMTemplate(string jagFile)
+        private string CreateARMTemplate(string jagFile, string environment)
         {
             var template = LoadTemplate("jagtoarm.jtran");
             var result   = JTran.TransformerBuilder
                                 .FromString(template)
                                 .AddInclude("resourcename",  LoadInclude("resourcename.jtran"))
                                 .AddInclude("helpers",       LoadInclude("helpers.jtran"))
+                                .AddArguments(new Dictionary<string, object> { {"environment", environment} } )
                                 .AddResources()
                                 .Build<string>()
                                 .Transform(jagFile);
-
+ 
             return result;
         }
 
@@ -103,6 +108,7 @@ namespace JAG.UnitTests
             "applicationinsights",
             "keyvault",
             "appserviceplan",
+            "api",
             "functionapp",
             "servicebus",
             "servicebusqueue",
