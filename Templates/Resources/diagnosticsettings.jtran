@@ -1,0 +1,61 @@
+{
+  "#element(diagnosticsettings)":
+  {
+    "#variable(AnalyticsResourceGroup)": "#(///ResourceGroupName)",
+    "#variable(Resources)":              "#(///resources)",
+    "#variable(AnalyticsName)":          "#($Resources[Type == 'loganalyticsworkspace'].Name)",
+
+    "type": "Microsoft.Insights/diagnosticSettings",
+    "apiVersion": "2021-05-01-preview",
+    "name": "#(ResourceName)",
+    "scope": "#(ResourceType + '/' + ResourceName)",
+
+    "properties":
+    {
+      "workspaceId": "#resourceId('Microsoft.OperationalInsights/workspaces', $AnalyticsName)",
+
+      "logs":
+      [
+        {
+          "categoryGroup": "allLogs",
+          "enabled": true,
+          "retentionPolicy":
+          {
+
+            "days": 0,
+            "enabled": false
+          }
+        }
+      ],
+      "metrics":
+      [
+
+        {
+          "category": "AllMetrics",
+          "enabled": true,
+          "retentionPolicy":
+          {
+
+            "days": 0,
+            "enabled": false
+          }
+        }
+      ]
+    },
+
+    "dependsOn": 
+    [
+        "#resourceid(ResourceType, ResourceName)"
+    ]
+  },
+
+  "#element(diagnosticsettings-meta)":
+  {
+    "#arrayitem(1)":
+    {
+      "Type":                   "diagnosticsettings",
+      "ResourceName":           "#(ResourceName)",
+      "ResourceType":           "#(ResourceType)"
+    }
+  }
+}

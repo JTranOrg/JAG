@@ -14,6 +14,11 @@
     "return":  "#($fnName + '(' + $param1 + ', ' +  $param2 + ', ' + $param3 + ')')"
   },
 
+  "#function(function4params, fnName, param1, param2, param3, param4)":
+  {
+    "return":  "#($fnName + '(' + $param1 + ', ' +  $param2 + ', ' + $param3 + ', ' + $param4 + ')')"
+  },
+
   "#function(resourceid, type, name)":
   {
     "return":  "#(function2params('resourceid', quoteit($type), quoteit($name)))"
@@ -56,6 +61,7 @@
         "#mapitem('Azure Service Bus Data Sender')":      "69a216fc-b8fb-44d8-bc22-1f3c2cd27a39",
         "#mapitem('Key Vault Secrets User')":             "4633458b-17de-408a-b874-0445c86b69e6",
         "#mapitem('Storage Blob Data Owner')":            "b7e6dc6d-f1e8-4753-8033-0f276bb0955b",        
+        "#mapitem('App Configuration Data Reader')":      "516239f1-63e1-4d78-a4de-a74fb236a071",
         "#mapitem":                                       ""
       }
     }
@@ -68,5 +74,118 @@
       "#variable(subscriptionResourceId)": "#(function2params('subscriptionResourceId', quoteit($roleDefinitions), quoteit($roleDefinitionId)))",
 
       "return":                            "#(bracketit(function2params('guid', $subscriptionResourceId, quoteit($resourceName))))"
+  },
+
+  "#element(callelementif, elementName, condition)":
+  {
+    "#if($condition)": 
+    {
+      "#callelement($elementName)": 
+      {
+        "#noobject": "#(@)"
+      }
+    }
+  },
+
+  "#element(ServiceBusSenderReceiver)":
+  {
+    "#if(not(empty(ServiceBusNamespace))": 
+    {
+      "#if(coalesce(CanReceiveServiceBus, false))":
+      {
+        "#roleassignment_apptoresource-meta()": 
+        {
+          "Index":                        "1",
+          "RoleName":                     "#('Azure Service Bus Data Receiver')",
+          "ResourceName":                 "#(ServiceBusNamespace)",
+          "ResourceType":                 "#('Microsoft.ServiceBus/namespaces')",
+          "PrincipalName":                "#(AppName)"
+        }
+      },
+
+      "#roleassignment_apptoresource-meta(2)": 
+      {
+        "Index":                        "2",
+        "RoleName":                     "#('Azure Service Bus Data Sender')",
+        "ResourceName":                 "#(ServiceBusNamespace)",
+        "ResourceType":                 "#('Microsoft.ServiceBus/namespaces')",
+        "PrincipalName":                "#(AppName)"
+      }
+    }
+  },
+
+  "#element(ServiceBusSender)":
+  {
+    "#if(not(empty(ServiceBusNamespace))": 
+    {
+      "#roleassignment_apptoresource-meta()": 
+      {
+        "Index":                        "1",
+        "RoleName":                     "#('Azure Service Bus Data Sender')",
+        "ResourceName":                 "#(ServiceBusNamespace)",
+        "ResourceType":                 "#('Microsoft.ServiceBus/namespaces')",
+        "PrincipalName":                "#(AppName)"
+      }
+    }
+  },
+
+  // Role assignment to app configuration if there is one
+  "#element(AppConfigUser)": 
+  {
+    "#if(not(empty(AppConfigurationName))": 
+    {
+      "#roleassignment_apptoresource-meta()": 
+      {
+        "RoleName":                     "#('App Configuration Data Reader')",
+        "ResourceName":                 "#(AppConfigurationName)",
+        "ResourceType":                 "#('Microsoft.AppConfiguration/configurationStores')",
+        "PrincipalName":                "#(AppName)"
+      }
+    }
+  },
+
+  // Role assignment to app configuration if there is one
+  "#element(KeyvaultUser)": 
+  {
+    "#if(not(empty(KeyvaultName))": 
+    {
+      "#roleassignment_apptoresource-meta()": 
+      {
+        "RoleName":                     "#('Key Vault Secrets User')",
+        "ResourceName":                 "#(KeyvaultName)",
+        "ResourceType":                 "#('Microsoft.KeyVault/vaults')",
+        "PrincipalName":                "#(AppName)"
+      }
+    }
+  },
+
+  "#element(AppCommon, canReceiveServiceBus)":
+  {
+    "#KeyvaultUser()": 
+    {
+      "KeyvaultName":                 "#(KeyvaultName)",
+      "AppName":                      "#(AppName)"
+    },
+
+    "#AppConfigUser()": 
+    {
+      "AppConfigurationName":         "#(AppConfigurationName)",
+      "AppName":                      "#(AppName)"
+    },
+
+    // Role assignments to servicebus namespace if there is one
+    "#ServiceBusSenderReceiver(canReceiveServiceBus)": 
+    {
+      "ServiceBusNamespace":          "#(ServiceBusNamespace)",
+      "AppName":                      "#(AppName)"
+    },    
+
+    "#diagnosticsettings-meta()":
+    {
+      "Type":              "diagnosticsettings",
+      "ResourceName":      "#(AppName)",
+      "ResourceType":      "Microsoft.Web/sites"
+    }
   }
+
 }

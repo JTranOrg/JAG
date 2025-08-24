@@ -45,10 +45,19 @@
 
   "#element(keyvault-meta)":
   {
+    "#variable(KeyvaultName)":  "#resourcename('keyvault', //basename, //environment)",
+
     "#arrayitem(1)": 
     {
       "Type":       "keyvault",
-      "Name":       "#resourcename('keyvault', //basename)"
+      "Name":       "#($KeyvaultName)"
+    },
+
+    "#diagnosticsettings-meta()":
+    {
+      "Type":              "diagnosticsettings",
+      "ResourceName":      "#($KeyvaultName)",
+      "ResourceType":      "Microsoft.KeyVault/vaults"
     }
   }
 }

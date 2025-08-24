@@ -1,0 +1,83 @@
+{
+  "#element(vnet)":
+  {
+  	"type":				        "Microsoft.Storage/storageAccounts",
+  	"apiVersion":		      "2023-05-01",
+  	"name":				        "#(Name)",
+  	"location":		        "#($location)",
+  	"sku":
+  	{
+  	  "name":			        "#(coalesce(sku.name, 'Standard_LRS'))",
+  	  "tier":			        "#(coalesce(sku.tier, 'Standard')"
+  	},                                    
+  	"kind":				        "#(coalesce(kind, 'StorageV2')",
+  	"properties":
+  	{
+  	  "azureFilesIdentityBasedAuthentication":
+  	  {
+  		  "directoryServiceOptions":  "None"
+  	  },
+  	  "minimumTlsVersion":		      "TLS1_2",
+  	  "allowBlobPublicAccess":	    "#(coalesce(allowBlobPublicAccess, false))",
+  	  "allowSharedKeyAccess":		    "#(coalesce(allowSharedKeyAccess, true))",
+  	  "networkAcls":
+  	  {
+  		  "bypass":				            "AzureServices",
+  		  "virtualNetworkRules":
+  		  [
+  		  ],
+  		  "ipRules":
+  		  [
+  		  ],
+  		  "defaultAction":		        "Allow"
+  	  },
+  	  "supportsHttpsTrafficOnly":   true,
+  	  "encryption":
+  	  {
+  		  "services":
+  		  {
+  			  "file":
+  			  {
+  				  "keyType":		          "Account",
+  				  "enabled":		          true
+  			  },
+  			  "blob":
+  			  {
+  				  "keyType":		          "Account",
+  				  "enabled":		          true
+  			  }
+  		  },
+  		  "keySource":			          "Microsoft.Storage"
+  	  },
+  	  "accessTier":				          "Hot"
+  	}
+  },
+
+  "#element(storageaccount-meta)":
+  {
+    "#variable(accountname)":  "#resourcename('storageaccount', coalesce(Basename, basename), //environment)",
+
+    "#arrayitem(1)": 
+    {
+      "Type":       "storageaccount",
+      "Name":       "#($accountname)"
+    },
+
+    "#if(any(blobcontainers))": 
+    {
+      "#callelement('blobservices-meta')":
+      {
+        "StorageName":  "#($accountname)"
+      },
+
+      "#foreach(blobcontainers)":
+      {
+        "#callelement('blobcontainer-meta')": 
+        {
+          "StorageName":   "#($accountname)",
+          "ContainerName": "#(@)"
+        }
+      }    
+    }
+  }
+}

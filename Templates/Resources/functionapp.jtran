@@ -14,7 +14,7 @@
     {
       "#arrayitem(1)": "#resourceid('Microsoft.Web/serverfarms', AppServicePlan)",
 
-      "#if(stringlength(StorageAccountName) != 0)":
+      "#if(not(empty(StorageAccountName)))":
       {
         "#arrayitem(2)": "#resourceid('Microsoft.Storage/storageAccounts', StorageAccountName)"
       }
@@ -76,12 +76,20 @@
              "name":    "FUNCTIONS_WORKER_RUNTIME",
              "value":   "dotnet-isolated"
           },
-          "#if(stringlength(ServiceBusNamespace) != 0)": 
+          "#if(not(empty(ServiceBusNamespace)))": 
           {
             "#arrayitem(5)":
             {
               "name":    "ServiceBusConnection__fullyQualifiedNamespace",
               "value":   "#(ServiceBusNamespace + '.servicebus.windows.net')"
+            }
+          },
+          "#if(not(empty(AppConfigurationName)))": 
+          {
+            "#arrayitem(6)":
+            {
+              "name":    "AppConfigurationUrl",
+              "value":   "#('https://' + AppConfigurationName + '.azconfig.io')"
             }
           }
         }
@@ -107,7 +115,8 @@
 
   "#element(functionapp-meta)":
   {
-    "#variable(functionAppName)":  "#resourcename('functionapp', coalesce(BaseName, //basename))",
+    "#variable(basename)":  "#(coalesce(BaseName, //basename, basename))",
+    "#variable(functionAppName)":  "#resourcename('functionapp', $basename, //environment)",
 
     "#arrayitem(1)": 
     {
@@ -117,20 +126,26 @@
       "StorageAccountName":     "#(StorageAccountName)",
       "AppInsightsName":        "#(AppInsightsName)",
       "sku":                    "#(sku)",
+      "storageaccount":         "#(storageaccount)",
 
-      "#if(stringlength(ServiceBusNamespace) != 0)": 
+      "#if(not(empty(ServiceBusNamespace)))": 
       {
        "ServiceBusNamespace":    "#(ServiceBusNamespace)"
       },
 
-      "#if(stringlength(KeyvaultName) != 0)": 
+      "#if(not(empty(AppConfigurationName)))": 
       {
-        "KeyvaultName":    "#(KeyvaultName)"
+       "AppConfigurationName":    "#(AppConfigurationName)"
+      },
+
+      "#if(not(empty(KeyvaultName)))": 
+      {
+        "KeyvaultName":           "#(KeyvaultName)"
       }
     },
 
     // Role assignment to storage account is required
-    "#callelement('roleassignment_apptoresource-meta')": 
+    "#roleassignment_apptoresource-meta()": 
     {
       "RoleName":                     "#('Storage Blob Data Owner')",
       "ResourceName":                 "#(StorageAccountName)",
@@ -138,37 +153,20 @@
       "PrincipalName":                "#($functionAppName)"
     },
 
-    // Role assignment to keyvault if there is one
-    "#if(stringlength(KeyvaultName) != null)": 
+    "#AppCommon()": 
     {
-      "#callelement('roleassignment_apptoresource-meta', 1)": 
-      {
-        "RoleName":                     "#('Key Vault Secrets User')",
-        "ResourceName":                 "#(KeyvaultName)",
-        "ResourceType":                 "#('Microsoft.KeyVault/vaults')",
-        "PrincipalName":                "#($functionAppName)"
-      }
+      "AppName":                      "#($functionAppName)",
+      "AppConfigurationName":         "#(AppConfigurationName)",
+      "KeyvaultName":                 "#(KeyvaultName)",
+      "ServiceBusNamespace":          "#(ServiceBusNamespace)",
+      "CanReceiveServiceBus":         true
     },
 
-    // Role assignment to servicebus namespace if there is one
-    "#if(stringlength(ServiceBusNamespace) != null)": 
+    "#if(not(empty(storageaccount)))":
     {
-      "#callelement('roleassignment_apptoresource-meta', 1)": 
+      "#callelement('storageaccount-meta')":
       {
-        "Index":                        "1",
-        "RoleName":                     "#('Azure Service Bus Data Receiver')",
-        "ResourceName":                 "#(ServiceBusNamespace)",
-        "ResourceType":                 "#('Microsoft.ServiceBus/namespaces')",
-        "PrincipalName":                "#($functionAppName)"
-      },
-
-      "#callelement('roleassignment_apptoresource-meta', 2)": 
-      {
-        "Index":                        "2",
-        "RoleName":                     "#('Azure Service Bus Data Sender')",
-        "ResourceName":                 "#(ServiceBusNamespace)",
-        "ResourceType":                 "#('Microsoft.ServiceBus/namespaces')",
-        "PrincipalName":                "#($functionAppName)"
+        "#noobject":  "#(storageaccount)"
       }
     }
   }

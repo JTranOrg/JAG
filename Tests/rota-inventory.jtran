@@ -1,17 +1,46 @@
 {
   "#include":    "*",
 
-  "#microservice()": 
+  "#variable(basename)": "rota-inventory",
+
+  "#deployment()": 
   {
-    "basename": "rota-inventory",
-    "region":   "westus2",
+    "basename":    "#($basename)",
+    "environment": "#($environment)",
+
+    "functionapps": 
+    [
+      {
+        "basename": "#($basename + '-etl')"
+      },
+      {
+        "basename": "#($basename + '-transaction')",
+        "storageaccount":  
+        {
+          "basename": "#($basename + '-ships')",
+
+          "blobcontainers": 
+          [
+            "flights",
+            "persons",
+            "ships"
+          ]
+        }
+      }
+    ],
+
+    "apis": 
+    [
+      "#($basename)"
+    ],
 
     "messagequeues":        
     [
       "nightlybatch",
       "addperson",
       "addflight",
-      "flightarrive"
+      "flightarrive",
+      "deleteflight"
     ],
 
     "databasecontainers":             
@@ -19,6 +48,12 @@
       "flights",
       "persons",
       "ships"
-    ]
+    ],
+
+    "configuration": 
+    {
+      "MaxRetries":   5,
+      "DeleteFlightQueue":  "deleteflight"
+    }
   }
 }

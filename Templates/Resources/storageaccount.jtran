@@ -7,10 +7,10 @@
   	"location":		        "#($location)",
   	"sku":
   	{
-  	  "name":			        "#(coalesce(Sku.Name, 'Standard_LRS'))",
-  	  "tier":			        "#(coalesce(Sku.Tier, 'Standard')"
+  	  "name":			        "#(coalesce(sku.name, 'Standard_LRS'))",
+  	  "tier":			        "#(coalesce(sku.tier, 'Standard')"
   	},                                    
-  	"kind":				        "#(coalesce(Kind, 'StorageV2')",
+  	"kind":				        "#(coalesce(kind, 'StorageV2')",
   	"properties":
   	{
   	  "azureFilesIdentityBasedAuthentication":
@@ -55,10 +55,30 @@
 
   "#element(storageaccount-meta)":
   {
+    "#variable(basename)":     "#(coalesce(BaseName, basename))",
+    "#variable(accountname)":  "#resourcename('storageaccount', $basename, //environment)",
+
     "#arrayitem(1)": 
     {
       "Type":       "storageaccount",
-      "Name":       "#resourcename('storageaccount', basename)"
+      "Name":       "#($accountname)"
+    },
+
+    "#if(any(blobcontainers))": 
+    {
+      "#callelement('blobservices-meta')":
+      {
+        "StorageName":  "#($accountname)"
+      },
+
+      "#foreach(blobcontainers)":
+      {
+        "#callelement('blobcontainer-meta')": 
+        {
+          "StorageName":   "#($accountname)",
+          "ContainerName": "#(@)"
+        }
+      }    
     }
   }
 }

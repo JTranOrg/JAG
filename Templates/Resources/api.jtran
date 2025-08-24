@@ -14,7 +14,7 @@
     {
       "#arrayitem(1)": "#resourceid('Microsoft.Web/serverfarms', AppServicePlan)",
 
-      "#if(stringlength(StorageAccountName) != 0)":
+      "#if(not(empty(StorageAccountName)))":
       {
         "#arrayitem(2)": "#resourceid('Microsoft.Storage/storageAccounts', StorageAccountName)"
       }
@@ -56,6 +56,27 @@
         "minimumElasticInstanceCount":  0,
         "#array(appSettings)": 
         {
+          "#arrayitem(1)":
+          {
+            "name":     "APPLICATIONINSIGHTS_CONNECTION_STRING",
+            "value":    "#appinsightsconnectionstring(AppInsightsName)"
+          }, 
+          "#if(not(empty(ServiceBusNamespace)))": 
+          {
+            "#arrayitem(2)":
+            {
+              "name":    "ServiceBusConnection__fullyQualifiedNamespace",
+              "value":   "#(ServiceBusNamespace + '.servicebus.windows.net')"
+            }
+          },
+          "#if(not(empty(AppConfigurationName)))": 
+          {
+            "#arrayitem(3)":
+            {
+              "name":    "AppConfigurationUrl",
+              "value":   "#('https://' + AppConfigurationName + '.azconfig.io')"
+            }
+          }
         }
       },
       "scmSiteAlsoStopped":             false,
@@ -79,7 +100,8 @@
 
   "#element(api-meta)":
   {
-    "#variable(apiName)":  "#resourcename('api', coalesce(BaseName, //basename))",
+    "#variable(basename)": "#(coalesce(BaseName, //basename))",
+    "#variable(apiName)":  "#resourcename('api', $basename, //environment)",
 
     "#arrayitem(1)": 
     {
@@ -88,22 +110,24 @@
       "AppServicePlan":         "#(AppServicePlan)",
       "AppInsightsName":        "#(AppInsightsName)",
 
-      "#if(stringlength(KeyvaultName) != 0)": 
+      "#if(not(empty(AppConfigurationName)))": 
+      {
+       "AppConfigurationName":    "#(AppConfigurationName)"
+      },
+
+      "#if(not(empty(KeyvaultName)))": 
       {
         "KeyvaultName":    "#(KeyvaultName)"
       }
     },
 
-    // Role assignment to keyvault if there is one
-    "#if(stringlength(KeyvaultName) != null)": 
+    "#AppCommon()": 
     {
-      "#callelement('roleassignment_apptoresource-meta', 1)": 
-      {
-        "RoleName":                     "#('Key Vault Secrets User')",
-        "ResourceName":                 "#(KeyvaultName)",
-        "ResourceType":                 "#('Microsoft.KeyVault/vaults')",
-        "PrincipalName":                "#($apiName)"
-      }
+      "AppName":                      "#($apiName)",
+      "AppConfigurationName":         "#(AppConfigurationName)",
+      "KeyvaultName":                 "#(KeyvaultName)",
+      "ServiceBusNamespace":          "#(ServiceBusNamespace)",
+      "CanReceiveServiceBus":         false
     }
   }
 } 

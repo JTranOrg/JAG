@@ -1,0 +1,33 @@
+{
+  "#element(blobcontainer)":
+  {
+     "type":        "Microsoft.Storage/storageAccounts/blobServices/containers",
+     "apiVersion":  "2023-05-01",
+     "name":        "#(StorageName + '/default/' + ContainerName)",
+     "dependsOn": 
+     [
+         "[resourceId('Microsoft.Storage/storageAccounts', StorageName)]",
+         "[resourceId('Microsoft.Storage/storageAccounts/blobServices', StorageName + '/' + default)]"
+     ],
+     "properties": 
+     {
+       "immutableStorageWithVersioning": 
+       {
+           "enabled": false
+       },
+       "defaultEncryptionScope":      "$account-encryption-key",
+       "denyEncryptionScopeOverride": false,
+       "publicAccess":                "None"
+     }
+  },
+
+  "#element(blobcontainer-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":           "blobcontainer",
+      "StorageName":    "#(StorageName)",
+      "ContainerName":  "#(ContainerName)"
+    }
+  }
+}

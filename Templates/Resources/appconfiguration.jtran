@@ -1,0 +1,51 @@
+{
+  "#element(appconfiguration)":
+  {
+    "type":         "Microsoft.AppConfiguration/configurationStores",
+    "apiVersion":   "2024-05-01",
+    "name":         "#(Name)", 
+    "location":     "#($location)",
+    "sku": 
+    {
+      "name":       "#(coalesce(sku.name, 'free'))"
+    },
+    "properties": 
+    {
+      "encryption": {},
+      "disableLocalAuth": false,
+      "softDeleteRetentionInDays": 0,
+      "enablePurgeProtection": false,
+      "dataPlaneProxy": 
+      {
+          "authenticationMode": "Local",
+          "privateLinkDelegation": "Disabled"
+      }
+    }
+  },
+
+  "#element(appconfiguration-meta)":
+  {
+    "#variable(basename)":    "#(coalesce(BaseName, //basename))",
+    "#variable(configName)":  "#resourcename('appconfiguration', $basename, //environment)",
+
+    "#arrayitem(1)": 
+    {
+      "Type":                   "appconfiguration",
+      "Name":                   "#($configName)",
+      "configuration":          "#(settings)"
+    },
+
+    "#foreach(settings)":
+    {
+      "#variable(value)":       "#(@)",
+
+      "#callelement('appconfigsetting-meta')": 
+      {
+        "Name":                 "#(name())",
+        "Value":                "#($value)",
+        "AppConfigurationName": "#($configName)"
+      }
+    }
+  }
+} 
+

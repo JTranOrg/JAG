@@ -2,9 +2,8 @@
   "#include":  "*",
 
   "#variable(basename)":          "#(resourcegroup.basename)",
-  "#variable(location)":          "#(resourcegroup.region)",
-  "#variable(resources)":         "#exclude(resourcegroup, basename, region)",
-  "#variable(environment)":       "#(resourcegroup.environment)",
+
+  "#variable(resources)":         "#exclude(resourcegroup, basename, region, georeplication)",
   "#variable(resourcegroupname)": "#('rg-' + $basename)",
   "#variable(subscription)":      "367aecbd-8fb0-4d19-9ede-100949e08ab",
   "#variable(tenantid)":          "fc396d72-8853-47fb-b312-5d8083756ae2",
@@ -12,12 +11,32 @@
   "Location":                     "#(resourcegroup.region)",
   "ResourceGroupName":            "#($resourcegroupname)",
   "Subscription":                 "#($subscription)",
+  "georeplication":               "#(resourcegroup.georeplication)",
+  "environment":                  "#(resourcegroup.environment)",
 
   "#array(resources)": 
   {
+    "#foreach(resourcegroup.functionapps)": 
+    {
+      "#functionapp-meta()":
+      {
+        "Name":               "#($basename)",
+        "#noobject":          "#(@)"
+      }
+    },
+
+    "#foreach(resourcegroup.apis)": 
+    {
+      "#api-meta()":
+      {
+        "Name":               "#($basename)",
+        "#noobject":          "#(@)"
+      }
+    },
+
     "#foreach($resources)": 
     {
-      "#if(name() != 'environment')": 
+      "#if(name() != 'environment' and name() != 'functionapps' and name() != 'apis')": 
       {
         "#callelement(substringbefore(name(), '(') + '-meta')":
         {

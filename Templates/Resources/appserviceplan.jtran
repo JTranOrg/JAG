@@ -31,7 +31,7 @@
 
   "#element(appserviceplan-meta)":
   {
-    "#variable(name)":      "#resourcename('appserviceplan', //basename)",
+    "#variable(name)":      "#resourcename('appserviceplan', //basename, //environment)",
 
     "#if(stringlength(storageaccount) != 0)":
     {
@@ -90,8 +90,13 @@
     {
       "BaseName":             "#(coalesce(basename, /basename, $basename))",
       "AppServicePlan":       "#($name)",
-      "AppInsightsName":      "#resourcename('applicationinsights', $basename)",
-      "KeyvaultName":         "#resourcename('keyvault', $basename)"
+      "AppInsightsName":      "#resourcename('applicationinsights', $basename, //environment)",
+      "KeyvaultName":         "#resourcename('keyvault', $basename, //environment)",
+
+      "#if(/////appconfiguration != null)": 
+      {
+        "AppConfigurationName":  "#resourcename('appconfiguration', $basename, //environment)"
+      }
     }
   },
 
@@ -101,15 +106,25 @@
 
     "#callelement('functionapp-meta')": 
     {
-      "BaseName":             "#(coalesce(basename, /basename, $basename1, $basename))",
+      "BaseName":             "#(coalesce(basename, /basename, $basename))",
       "AppServicePlan":       "#($name)",
-      "AppInsightsName":      "#resourcename('applicationinsights', $basename)",
-      "StorageAccountName":   "#resourcename('storageaccount', $basename)",
-      "KeyvaultName":         "#resourcename('keyvault', $basename)",
+      "AppInsightsName":      "#resourcename('applicationinsights', $basename, //environment)",
+      "StorageAccountName":   "#resourcename('storageaccount', $basename, //environment)",
+      "KeyvaultName":         "#resourcename('keyvault', $basename, //environment)",
 
       "#if(/////servicebus != null)": 
       {
-        "ServiceBusNamespace":  "#resourcename('servicebus', $basename)"
+        "ServiceBusNamespace":  "#resourcename('servicebus', $basename, //environment)"
+      },
+
+      "#if(/////appconfiguration != null)": 
+      {
+        "AppConfigurationName":  "#resourcename('appconfiguration', $basename, //environment)"
+      },
+
+      "#if(storageaccount)": 
+      {
+        "storageaccount":  "#(storageaccount)"
       }
     }
   }

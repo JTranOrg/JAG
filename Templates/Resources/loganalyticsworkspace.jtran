@@ -29,7 +29,7 @@
 
   "#element(loganalyticsworkspace-meta)":
   {
-    "#variable(workspaceName)":  "#resourcename('loganalyticsworkspace', //basename)",
+    "#variable(workspaceName)":  "#resourcename('loganalyticsworkspace', //basename, //environment)",
 
     "#arrayitem(1)": 
     {

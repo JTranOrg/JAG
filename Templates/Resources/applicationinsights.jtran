@@ -20,11 +20,14 @@
 
   "#element(applicationinsights-meta)":
   {
+    "#variable(basename)":  "#(coalesce(BaseName, //basename))",
+    "#variable(name)":      "#resourcename('applicationinsights', $basename, //environment)",
+
     "#arrayitem(1)": 
     {
-      "Type":           "applicationinsights",
-      "Name":           "#resourcename('applicationinsights', coalesce(BaseName, //basename))",
-      "WorkspaceName":  "#(WorkspaceName)"
+      "Type":               "applicationinsights",
+      "Name":               "#($name)",
+      "WorkspaceName":      "#(WorkspaceName)"
     }
   }
 }

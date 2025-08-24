@@ -7,6 +7,7 @@
   "#variable(location)":          "#(Location)",
   "#variable(resourcegroupname)": "#(ResourceGroupName)",
   "#variable(subscription)":      "#(Subscription)",
+  "#variable(georeplication)":    "#(georeplication)",
 
   "variables":
   {

@@ -1,0 +1,18 @@
+{
+  "#element(diagnostics)":
+  {
+  	"type":				        "Microsoft.Insights/diagnosticSettings",
+  	"apiVersion":		      "2021-05-01-preview",
+  	"name":				        "#(Name)",
+  	"location":		        "#($location)"
+  },
+
+  "#element(diagnostics-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":       "diagnostics",
+      "Name":       "#(Name)"
+    }
+  }
+}

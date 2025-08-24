@@ -7,27 +7,50 @@
     "location":   "#($location)",
     "sku": 
     {
-        "name": "Basic",
-        "tier": "Basic"
+        "name":     "#(coalesce(sku.name, 'Basic'))",
+        "tier":     "#(coalesce(sku.tier, 'Basic'))",
+        "capacity": "#(coalesce(sku.capacity, 1))"
     },
     "properties": 
     {
-        "premiumMessagingPartitions":   0,
-        "minimumTlsVersion":            "1.2",
-        "publicNetworkAccess":          "Enabled",
-        "disableLocalAuth":             false,
-        "zoneRedundant":                false
+      "premiumMessagingPartitions":   0,
+      "minimumTlsVersion":            "1.2",
+      "publicNetworkAccess":          "Enabled",
+      "disableLocalAuth":             false,
+      "zoneRedundant":                "#(coalescebool(zoneRedundant, true))",
+
+      "#if(not(empty(///georeplication))": 
+      {
+        "geoDataReplication": 
+        {
+          "maxReplicationLagDurationInSeconds": "#(coalesce(maxReplicationLagDurationInSeconds, 300))",
+          "#array(locations)": 
+          {
+            "#arrayitem(1)": 
+            {
+              "locationName": "#($location)",
+              "roleType":     "Primary"
+            },
+            "#arrayitem(2)": 
+            {
+              "locationName": "#(///georeplication[0])", // ServiceBus currently only supports two regions so we'll just put in the first from the list
+              "roleType":     "Secondary"
+            }
+          }
+        }
+      }
     }
   },
 
   "#element(servicebus-meta)":
   {
-    "#variable(ServiceBusNamespace)":  "#resourcename('servicebus', basename)",
+    "#variable(ServiceBusNamespace)":  "#resourcename('servicebus', basename, //environment)",
 
     "#arrayitem(1)": 
     {
       "Type":       "servicebus",
-      "Name":       "#($ServiceBusNamespace)"
+      "Name":       "#($ServiceBusNamespace)",
+      "sku":        "#(sku)"
     },
     
     "#foreach(queues)": 
@@ -37,7 +60,13 @@
         "Name": "#(@)",
         "ServiceBusNamespace":  "#($ServiceBusNamespace)"
       }
-    }
+    },    
 
+    "#diagnosticsettings-meta()":
+    {
+      "Type":              "diagnosticsettings",
+      "ResourceName":      "#($ServiceBusNamespace)",
+      "ResourceType":      "Microsoft.ServiceBus/namespaces"
+    }
   }
 }

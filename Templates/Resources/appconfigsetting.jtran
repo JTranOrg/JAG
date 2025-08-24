@@ -1,0 +1,27 @@
+{
+  "#element(appconfigsetting)":
+  {
+    "type": "Microsoft.AppConfiguration/configurationStores/keyValues",
+    "apiVersion":   "2024-05-01",
+    "name":         "#(AppConfigurationName + '/' + Name)", 
+    "dependsOn": 
+    [
+        "#(AppConfigurationName)" 
+    ],
+    "properties": 
+    {
+      "value":        "#(Value)"
+    }  
+  },
+
+  "#element(appconfigsetting-meta)":
+  {
+    "#arrayitem(1)": 
+    {
+      "Type":                 "appconfigsetting",
+      "Name":                   "#(Name)",
+      "AppConfigurationName":   "#(AppConfigurationName)",
+      "Value":                  "#(Value)"
+    }
+  }
+} 

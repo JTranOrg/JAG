@@ -1,0 +1,115 @@
+{
+  "#element(deployment)":
+  {
+    "resourcegroup":
+    {
+      "basename":             "#(basename)",
+      "region":               "westus2",
+      "environment":          "#(environment)",
+
+      "#if($environment == 'prod' or $environment == 'stg')": 
+      {
+        "georeplication":
+        [
+          "centralus",
+          "eastus2"
+        ]
+      },
+
+      "appconfiguration":       
+      {
+        "settings":  "#(configuration)"
+      },
+
+      "loganalyticsworkspace": 
+      {
+        "applicationinsights":  {}
+      },
+
+      "keyvault":               {},
+
+      "#if(not(empty(functionapps)) or not(empty(apis)))":
+      {
+        "appserviceplan":         
+        {
+          "sku":
+          {
+            "#if($environment == 'qa')":  
+            {
+              "name":       "B1",
+              "tier":       "Basic",
+              "size":       "B1",
+              "family":     "B",
+              "capacity":   1
+            },
+  
+            "#elseif($environment == 'stg')":  
+            {
+              "name":       "B2",
+              "tier":       "Basic",
+              "size":       "B2",
+              "family":     "B",
+              "capacity":   2
+            },
+  
+            "#elseif($environment == 'prod')":  
+            {
+              "name":       "B1",
+              "tier":       "Basic",
+              "size":       "B1",
+              "family":     "B",
+              "capacity":   1
+            },
+  
+            "#else":  
+            {
+              "name":       "B1",
+              "tier":       "Basic",
+              "size":       "B1",
+              "family":     "B",
+              "capacity":   1
+            }
+          }
+        },
+
+        "#foreach(functionapps, functionapps)": 
+        {
+          "#noobject":        "#(@)"
+        },
+
+        "#foreach(apis, apis)": 
+        {
+          "basename":         "#(@)"
+        },
+
+        "storageaccount":     {}
+      },
+
+      "#if(messagequeues)": 
+      {
+        "servicebus": 
+        {
+          "queues":         "#(messagequeues)",
+          "basename":       "#(basename)",
+          "zoneRedundant":  "#iif($environment == 'dev', false, true)",
+
+          "sku": 
+          {
+            "#if($environment == 'prod' or $environment == 'stg')":
+            {
+              "name":     "Premium",
+              "tier":     "Premium",
+              "capacity": 2
+            },
+
+            "#else":
+            {
+              "name": "Basic",
+              "tier": "Basic"
+            }
+          }
+        }
+      }
+    }
+  }
+}

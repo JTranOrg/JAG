@@ -37,10 +37,10 @@ namespace JAG.UnitTests
         private string CreateJAGFile(string name, string environment)
         {
             var template = LoadTemplate(name + ".jtran");
-            var include = LoadTemplate("Includes\\microservice.jtran");
+            var include = LoadTemplate("Includes\\deployment.jtran");
             var result  = JTran.TransformerBuilder
                                .FromString(template)
-                               .AddInclude("microservice.jtran", include)
+                               .AddInclude("deployment", include)
                                .AddArguments(new Dictionary<string, object> { {"environment", environment} } )
                                .Build<string>()
                                .Transform("{ 'dummy': null}");
@@ -105,8 +105,13 @@ namespace JAG.UnitTests
         private static List<string> _includes = new List<string>
         {
             "storageaccount",
+            "appconfiguration",
+            "appconfigsetting",
             "applicationinsights",
+            "blobservices",
+            "blobcontainer",
             "keyvault",
+            "diagnosticsettings",
             "appserviceplan",
             "api",
             "functionapp",

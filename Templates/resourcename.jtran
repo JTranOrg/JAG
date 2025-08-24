@@ -1,16 +1,17 @@
 {
-  "#element(resourcename, resourcetype, basename)": 
+  "#element(resourcename, resourcetype, basename, environment)": 
   { 
-    "return":  "#(resourcename($resourcetype, $basename))"
+    "return":  "#(resourcename($resourcetype, $basename, coalesce($environment, 'dev')))"
   },
 
-  "#function(resourcename, resourcetype, basename)": 
+  "#function(resourcename, resourcetype, basename, environment)": 
   { 
     "#variable(prefix)":        
     {
       "#map($resourcetype)": 
       {
         "#mapitem('api')":                    "api",
+        "#mapitem('appconfiguration')":       "appcs",
         "#mapitem('applicationinsights')":    "ai",
         "#mapitem('appserviceplan')":         "asp",
         "#mapitem('functionapp')":            "func",
@@ -25,11 +26,11 @@
 
     "#if($resourcetype == 'storageaccount')":  
     {
-      "return":     "#($prefix + replace($basename, '-', ''))"
+      "return":     "#($prefix + replace($basename, '-', '') + $environment)"
     },
     "#else":
     {
-       "return":    "#($prefix + '-' + $basename)"
+       "return":    "#($prefix + '-' + $basename + '-' + $environment)"
     }
   }
 }
